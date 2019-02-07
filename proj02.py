@@ -1,16 +1,4 @@
 #Herb Zieger
-def printValid(original, level, tag, args, isValid): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
-    print("--> "+original+"\n<-- "+level+"|"+tag+"|"+isValid+"|"+args)
-def addNewInstance(dict, id):
-    print(id,"\n")
-    dict[id] = {"id": id}
-levelZero = ["NOTE", "HEAD", "TRLR"] #possible tags for level zero
-levelZeroWeird = ["INDI", "FAM"] #exceptions to normal format
-levelOne = ["NAME", "SEX", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "BIRT", "DEAT", "MARR", "DIV"] #possible tags for level one
-levelTwo = ["DATE"] #possbile tags for level two
-
-individuals = { "test": {"id": "@2738@"}}
-families = {}
 
 class Individual:
     def __init__(self, id):
@@ -30,6 +18,21 @@ class Family:
         self.husband = None
         self.wife = None
         self.children = []
+
+def printValid(original, level, tag, args, isValid): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
+    print("--> "+original+"\n<-- "+level+"|"+tag+"|"+isValid+"|"+args)
+def addNewInstance(dict, id):
+    print(id,"\n")
+    dict[id] = {"id": id}
+
+levelZero = ["NOTE", "HEAD", "TRLR"] #possible tags for level zero
+levelZeroWeird = ["INDI", "FAM"] #exceptions to normal format
+levelOne = ["NAME", "SEX", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "BIRT", "DEAT", "MARR", "DIV"] #possible tags for level one
+levelTwo = ["DATE"] #possbile tags for level two
+
+individuals = { "test": {"id": "@2738@"}}
+families = {}
+
 
 
 f = open("testFamily.ged", "r") #open file
