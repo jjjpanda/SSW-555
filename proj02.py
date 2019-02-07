@@ -15,17 +15,3 @@ for line in input: #More compact, but not as readable:
         printValid(line, words[0], words[2], words[1], "Y")
     else: #if it dosen't fit the above condidtions, it is invalid
         printValid(line, words[0], words[1], ' '.join(words[2:]), "N")
-"""
-for line in input: #elif chain that does the same thing as above, but more readable
-    words = line.split() #split lines into lists
-    if (words[0] is "0" and words[1] in levelZero): #check for normal level 0
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
-    elif (words[0] is "0" and words[2] in levelZeroWeird): #check for weird level 0
-        printValid(line, words[0], words[2], words[1], "Y")
-    elif (words[0] is "1" and words[1] in levelOne): #check for level 1
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
-    elif (words[0] is "2" and words[1] in levelTwo): #check for 2
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
-    else: #if it dosen't fit the above condidtions, it is invalid
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "N")
-"""
