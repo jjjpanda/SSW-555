@@ -45,7 +45,6 @@ def gedcom_cleaner(dir_path, file_name):
 
                 # With variables set, check that their combinations are valid
                 if (level in gedcom_rules.keys()) and (tag in gedcom_rules[level]) and (line[1] != 'FAM') and (line[1] != 'INDI'): #also check that 'FAM' and 'INDI' are not on the second position
-                    print(f"{level}|{tag}|{args}")
                     outFile = open("validlines.txt", "a")
                     outFile.write(f"{level}|{tag}|{args}\n")
                 else: #if combination of characters is not allowed in that order, pring with a 'N' flag
@@ -67,12 +66,15 @@ class Individual:
     Unique Family ID where the individual is a child, Unique Family ID where the individual is a spouse"""
     def __init__(self, id):
         self.id = id
-        self.name = None
-        self.gender = None
-        self.birth = None
-        self.death = None
-        self.famc = None
-        self.fams = None
+        self.name = ""
+        self.gender = ""
+        self.birth = ""
+        self.death = ""
+        self.child = ""
+        self.spouse = ""
+
+    def __repr__(self):
+        return str(self.id + self.name + self.gender + self.birth + self.death + self.child + self.spouse)
         
         # @name.setter
         # def set_name(self, name):
@@ -121,28 +123,28 @@ def gedcom_categorizer(dir_path, file_name, gedcom):
                     current_id = line[2]
                     gedcom.individual[current_id] = Individual(id)
                                 
-                while line[0] =! "0":
+                if line[0] != "0":
                     if line[1] == "SEX":
                         gedcom.individual[current_id].gender = line[2]
-                    if line[1] == "NAME":
+                    elif line[1] == "NAME":
                         gedcom.individual[current_id].name = line[2]
+                    elif line[1] == "FAMC":
+                        gedcom.individual[current_id].child = line[2]
+                    elif line[1] == "FAMS":
+                        gedcom.individual[current_id].spouse = line[2]
                     
-                    if line[1] == "BIRT":
+                    elif line[1] == "BIRT":
                         nexttagbirt = True
-                    if line[1] == "DEAT":
+                    elif line[1] == "DEAT":
                         nexttagbirt = False
 
-                    if line[1] == "DATE":
+                    elif line[1] == "DATE":
                         if nexttagbirt:
                             gedcom.individual[current_id].birth = line[2]
                         else:
                             gedcom.individual[current_id].death = line[2]
-
+                
                     
-
-                        
-                        
-
 
     
 
@@ -155,6 +157,7 @@ def main():
     gedcom_cleaner('G:\My Drive\S19\SSW 555\Project', "Project01GEDCOM.txt")
     gedcom_categorizer('G:\My Drive\S19\SSW 555\Project', "validlines.txt", mygedcom)
 
+    print(mygedcom.individual['@I6000000086660206845@'])
 
 if __name__ == '__main__':
     main()
