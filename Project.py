@@ -12,7 +12,7 @@ It prints all allowed lines, properly formatted with a 'Y' flag, and all invalid
     5. once categorized between valid and invalid, print with respective tag.
 """
 
-def gedcom_cleaner(dir_path, file_name):
+def gedcom_cleaner(file_name):
     """this generator returns all the values of a line on each call to next()"""
 
         
@@ -21,7 +21,7 @@ def gedcom_cleaner(dir_path, file_name):
                     '2': {'DATE'}}
     
     open("validlines.txt", "w").close()
-    gedcom_file = os.path.join(dir_path, file_name)
+    gedcom_file = os.path.realpath(file_name)
     try:
         fp = open(gedcom_file, 'r') # Do the risky action of attempting to open a file
     except FileNotFoundError:
@@ -102,8 +102,8 @@ class Individual:
 
 
 
-def gedcom_categorizer(dir_path, file_name, gedcom):
-    validlines_file = os.path.join(dir_path, file_name)
+def gedcom_categorizer(file_name, gedcom):
+    validlines_file = os.path.realpath(file_name)
     try:
         fp = open(validlines_file, 'r') # Do the risky action of attempting to open a file
     except FileNotFoundError:
@@ -154,10 +154,10 @@ def main():
     
     mygedcom = GedcomFile()
     
-    gedcom_cleaner('G:\My Drive\S19\SSW 555\Project', "Project01GEDCOM.txt")
-    gedcom_categorizer('G:\My Drive\S19\SSW 555\Project', "validlines.txt", mygedcom)
+    gedcom_cleaner("Project01GEDCOM.txt")
+    gedcom_categorizer("validlines.txt", mygedcom)
 
-    print(mygedcom.individual)
+    print(mygedcom.individual['@I6000000086659971220@'])
 
 if __name__ == '__main__':
     main()
