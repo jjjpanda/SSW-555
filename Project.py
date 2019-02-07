@@ -1,6 +1,5 @@
 import os
 import unittest
-
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
 It prints all allowed lines, properly formatted with a 'Y' flag, and all invalid lines with an 'N' flag.
@@ -74,7 +73,7 @@ class Individual:
         self.spouse = ""
 
     def __str__(self):
-        return str(self.__dict__)
+        return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
         
         # @name.setter
         # def set_name(self, name):
@@ -121,7 +120,7 @@ def gedcom_categorizer(file_name, gedcom):
 
                 if line[0] == "0" and line[1] == "INDI":
                     current_id = line[2]
-                    gedcom.individual[current_id] = Individual(id)
+                    gedcom.individual[current_id] = Individual(current_id)
                                 
                 if line[0] != "0":
                     if line[1] == "SEX":
@@ -157,7 +156,8 @@ def main():
     gedcom_cleaner("Project01GEDCOM.txt")
     gedcom_categorizer("validlines.txt", mygedcom)
 
-    print(mygedcom.individual['@I6000000086659971220@'])
+    for ID in mygedcom.individual:
+        print(mygedcom.individual[ID])
 
 if __name__ == '__main__':
     main()
