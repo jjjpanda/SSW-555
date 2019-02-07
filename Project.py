@@ -73,8 +73,8 @@ class Individual:
         self.child = ""
         self.spouse = ""
 
-    def __repr__(self):
-        return str(self.id + self.name + self.gender + self.birth + self.death + self.child + self.spouse)
+    def __str__(self):
+        return str(self.__dict__)
         
         # @name.setter
         # def set_name(self, name):
@@ -157,7 +157,7 @@ def main():
     gedcom_cleaner('G:\My Drive\S19\SSW 555\Project', "Project01GEDCOM.txt")
     gedcom_categorizer('G:\My Drive\S19\SSW 555\Project', "validlines.txt", mygedcom)
 
-    print(mygedcom.individual['@I6000000086660206845@'])
+    print(mygedcom.individual)
 
 if __name__ == '__main__':
     main()
