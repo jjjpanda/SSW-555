@@ -9,6 +9,8 @@ class Individual:
         self.sex = None
         self.famc = None
         self.fams = None
+    def __repr__(self):
+        return str(self.id)
 
 class Family:
     def __init__(self, id):
@@ -18,12 +20,17 @@ class Family:
         self.husband = None
         self.wife = None
         self.children = []
+    def __repr__(self):
+        return str(self.id)
 
 def printValid(original, level, tag, args, isValid): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
     print("--> "+original+"\n<-- "+level+"|"+tag+"|"+isValid+"|"+args)
-def addNewInstance(dict, id):
+def addNewInstance(dict, id, type):
     print(id,"\n")
-    dict[id] = {"id": id}
+    if (type == "F"):
+        dict[id] = Family(id)
+    if (type == "I"):
+            dict[id] = Individual(id)
 
 levelZero = ["NOTE", "HEAD", "TRLR"] #possible tags for level zero
 levelZeroWeird = ["INDI", "FAM"] #exceptions to normal format
@@ -31,7 +38,7 @@ levelOne = ["NAME", "SEX", "FAMC", "FAMS", "HUSB", "WIFE", "CHIL", "BIRT", "DEAT
 levelTwo = ["DATE"] #possbile tags for level two
 
 individuals = { "test": {"id": "@2738@"}}
-families = {}
+families = { "test": {"id": "@2738@"}}
 
 
 
@@ -43,6 +50,10 @@ for line in input: #More compact, but not as readable:
         printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
     elif (words[0] is "0" and words[2] in levelZeroWeird): #check for weird level 0
         printValid(line, words[0], words[2], words[1], "Y")
+        if (words[2] == "INDI"):
+            addNewInstance(individuals, words[1], "I")
+        elif (words[2] == "FAM"):
+            addNewInstance(families, words[1], "F")
     else: #if it dosen't fit the above condidtions, it is invalid
         printValid(line, words[0], words[1], ' '.join(words[2:]), "N")
 print(individuals)
