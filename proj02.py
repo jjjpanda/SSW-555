@@ -1,8 +1,8 @@
 #Herb Zieger
 from prettytable import PrettyTable
 
-class Individual:
-    def __init__(self, id):
+class Individual: #class for individuals
+    def __init__(self, id): #constructor only set id at creation
         self.id = id
         self.name = "N/A"
         self.birthday = "N/A"
@@ -10,6 +10,7 @@ class Individual:
         self.sex = "N/A"
         self.famc = "N/A"
         self.fams = "N/A"
+    #setter methods to change values
     def setName(self, input):
         self.name = input
     def setBirthday(self, input):
@@ -22,12 +23,12 @@ class Individual:
         self.famc = input
     def setFams(self, input):
         self.fams = input
-    def getValues(self):
+    def getValues(self): #get values in a list
         return [self.id, self.name, self.birthday, self.deathday, self.sex, self.famc, self.fams]
-    def __repr__(self):
+    def __repr__(self): #to string method
         return self.id+" "+self.name+" "+self.birthday+" "+self.deathday+" "+self.sex+" "+self.famc+" "+self.fams
 
-class Family:
+class Family: #constructor only set id at creation
     def __init__(self, id):
         self.id = id
         self.marriage = "N/A"
@@ -35,6 +36,7 @@ class Family:
         self.husband = "N/A"
         self.wife = "N/A"
         self.children = []
+    #setter methods to change values
     def setMarriage(self, input):
         self.marriage = input
     def setDivorce(self, input):
@@ -43,22 +45,22 @@ class Family:
         self.husband = input
     def setWife(self, input):
         self.wife = input
-    def setChildren(self, input):
+    def setChildren(self, input): #adds children ids to list of children
         self.children.append(input)
-    def getValues(self):
+    def getValues(self): #get values in a list
         return self.id, self.marriage, self.divorce, self.husband, self.wife, str(self.children)
-    def __repr__(self):
+    def __repr__(self): #to string method
         return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
 
-def printValid(original, level, tag, args, isValid): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
-    print(level+"|"+tag+"|"+args)
+def printValid(level, tag, args): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
+    print(level+"|"+tag+"|"+args) #
 
-def addNewInstance(dict, id, type):
+def addNewInstance(dict, id, type): #create new individual or family with id
     if (type == "F"):
         dict[id] = Family(id)
     if (type == "I"):
         dict[id] = Individual(id)
-def addToInstance(dict, id, tag, args):
+def addToInstance(dict, id, tag, args): #add to individual or family with specific tags
     if (tag == "NAME"):
         dict[id].setName(args)
     elif (tag == "BIRT"):
@@ -82,14 +84,14 @@ def addToInstance(dict, id, tag, args):
     elif (tag == "CHIL"):
         dict[id].setChildren(args)
 
-def genTables(peopleDict, familyDict):
-    peopleTable = PrettyTable()
+def genTables(peopleDict, familyDict): #create prettytables with individuals and families
+    peopleTable = PrettyTable() #table for individuals
     peopleTable.field_names = ["ID", "Name", "Birth Date", "Death Date", "Sex", "Famc", "Fams"]
     for item, values in peopleDict.items():
         peopleTable.add_row(values.getValues())
     print(peopleTable)
 
-    familyTable = PrettyTable()
+    familyTable = PrettyTable() #table for families
     familyTable.field_names = ["ID", "Marriage Date", "Divorce Date", "Husband", "Wife", "Children"]
     for item, values in familyDict.items():
         familyTable.add_row(values.getValues())
@@ -102,17 +104,15 @@ levelTwo = ["DATE"] #possbile tags for level two
 
 individuals = {}
 families = {}
-currentID = ""
-
 
 f = open("testFamily.ged", "r") #open file
 input = f.read().splitlines() #save file as list of individual lines
 for line in input: #More compact, but not as readable:
     words = line.split() #split lines into lists
     if (words[0] is "0" and words[1] in levelZero):
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
+        printValid(words[0], words[1], ' '.join(words[2:]))
     elif (len(words) is 3 and words[0] is "0" and words[2] in levelZeroWeird): #check for weird level 0
-        printValid(line, words[0], words[2], words[1], "Y")
+        printValid(words[0], words[2], words[1])
         if (words[2] == "INDI"):
             currentID = words[1]
             currentDict = individuals
@@ -123,15 +123,13 @@ for line in input: #More compact, but not as readable:
             currentDict = families
             currentType = "F"
             addNewInstance(currentDict, currentID, currentType)
-    elif(words[0] is "1" and words[1] in levelOne):
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
+    elif(words[0] is "1" and words[1] in levelOne): #uses id from previous indi or fam tag
+        printValid(words[0], words[1], ' '.join(words[2:]))
         addToInstance(currentDict, currentID, words[1], ' '.join(words[2:]))
         currentTag = words[1]
-    elif ((words[0] is "2" and words[1] in levelTwo)): # check for normal valid
-        printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
+    elif ((words[0] is "2" and words[1] in levelTwo)): #uses tag from previous line if date tag is found
+        printValid(words[0], words[1], ' '.join(words[2:]))
         addToInstance(currentDict, currentID, currentTag, ' '.join(words[2:]))
-    #else: #if it dosen't fit the above condidtions, it is invalid
-       # printValid(line, words[0], words[1], ' '.join(words[2:]), "N")
 
 """for indiv, value in individuals.items():
     print(value)
