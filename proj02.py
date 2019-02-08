@@ -1,5 +1,6 @@
 #Herb Zieger
 from prettytable import PrettyTable
+from datetime import datetime
 
 class Individual: #class for individuals
     def __init__(self, id): #constructor only set id at creation
@@ -14,17 +15,23 @@ class Individual: #class for individuals
     def setName(self, input):
         self.name = input
     def setBirthday(self, input):
-        self.birthday = input
+        self.birthday = stringToDate(input)
     def setDeathday(self, input):
-        self.deathday = input
+        self.deathday = stringToDate(input)
     def setSex(self, input):
         self.sex = input
     def setFamc(self, input):
         self.famc = input
     def setFams(self, input):
         self.fams = input
-    def getValues(self): #get values in a list
-        return [self.id, self.name, self.birthday, self.deathday, self.sex, self.famc, self.fams]
+    def isAlive(self):
+        return True if self.deathday == "N/A" else False
+    def getAge(self):
+        if (self.deathday == "N/A"):
+            currentDate = datetime.now()
+            return currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
+        else:
+            return self.deathday.year - self.birthday.year - ((self.deathday.month, self.deathday.day) < (self.birthday.month, self.birthday.day))
     def __repr__(self): #to string method
         return self.id+" "+self.name+" "+self.birthday+" "+self.deathday+" "+self.sex+" "+self.famc+" "+self.fams
 
@@ -38,19 +45,29 @@ class Family: #constructor only set id at creation
         self.children = []
     #setter methods to change values
     def setMarriage(self, input):
-        self.marriage = input
+        self.marriage = stringToDate(input)
     def setDivorce(self, input):
-        self.divorce = input
+        self.divorce = stringToDate(input)
     def setHusband(self, input):
         self.husband = input
     def setWife(self, input):
         self.wife = input
     def setChildren(self, input): #adds children ids to list of children
         self.children.append(input)
-    def getValues(self): #get values in a list
-        return self.id, self.marriage, self.divorce, self.husband, self.wife, str(self.children)
     def __repr__(self): #to string method
         return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
+
+def stringToDate(strInput):
+    try:
+        return datetime.strptime(strInput, "%d %b %Y")
+    except:
+        return strInput
+
+def datetoString(dateInput):
+    try:
+        return datetime.strftime(dateInput, "%Y-%m-%d")
+    except:
+        return dateInput
 
 def printValid(level, tag, args): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
     print(level+"|"+tag+"|"+args) #
@@ -86,15 +103,15 @@ def addToInstance(dict, id, tag, args): #add to individual or family with specif
 
 def genTables(peopleDict, familyDict): #create prettytables with individuals and families
     peopleTable = PrettyTable() #table for individuals
-    peopleTable.field_names = ["ID", "Name", "Birth Date", "Death Date", "Sex", "Famc", "Fams"]
+    peopleTable.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death Date", "Child", "Spouse"]
     for item, values in peopleDict.items():
-        peopleTable.add_row(values.getValues())
+        peopleTable.add_row([values.id, values.name, values.sex, datetoString(values.birthday), values.getAge(), values.isAlive(), datetoString(values.deathday), values.famc, values.fams])
     print(peopleTable)
 
     familyTable = PrettyTable() #table for families
-    familyTable.field_names = ["ID", "Marriage Date", "Divorce Date", "Husband", "Wife", "Children"]
+    familyTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
     for item, values in familyDict.items():
-        familyTable.add_row(values.getValues())
+        familyTable.add_row([values.id, datetoString(values.marriage), datetoString(values.divorce), values.husband, peopleDict[values.husband].name, values.wife, peopleDict[values.wife].name, str(values.children)])
     print(familyTable)
 
 levelZero = ["NOTE", "HEAD", "TRLR"] #possible tags for level zero
@@ -111,7 +128,7 @@ for line in input: #More compact, but not as readable:
     words = line.split() #split lines into lists
     if (words[0] is "0" and words[1] in levelZero):
         printValid(words[0], words[1], ' '.join(words[2:]))
-    elif (len(words) is 3 and words[0] is "0" and words[2] in levelZeroWeird): #check for weird level 0
+    elif (len(words) is 3 and words[0] is "0" and words[2] in levelZeroWeird): #check for indi or fam
         printValid(words[0], words[2], words[1])
         if (words[2] == "INDI"):
             currentID = words[1]
@@ -137,3 +154,5 @@ print("")
 for family, value in families.items():
     print(value)"""
 genTables(individuals, families)
+
+print(individuals["@I1@"].getAge())
