@@ -1,6 +1,7 @@
 #Herb Zieger
 from prettytable import PrettyTable
 from datetime import datetime
+import sys
 
 class Individual: #class for individuals
     def __init__(self, id): #constructor only set id at creation
@@ -122,7 +123,16 @@ levelTwo = ["DATE"] #possbile tags for level two
 individuals = {}
 families = {}
 
-f = open("testFamily.ged", "r") #open file
+if len(sys.argv) > 1: 
+    try:
+        f = open(sys.argv[1], "r")#open file
+    except:
+        print("can't open file")
+else:
+    try:
+        f = open("testFamily.ged", "r")
+    except:
+        print("can't open file")       
 input = f.read().splitlines() #save file as list of individual lines
 for line in input: #More compact, but not as readable:
     words = line.split() #split lines into lists
