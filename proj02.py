@@ -1,4 +1,5 @@
 #Herb Zieger
+from prettytable import PrettyTable
 
 class Individual:
     def __init__(self, id):
@@ -21,6 +22,8 @@ class Individual:
         self.famc = input
     def setFams(self, input):
         self.fams = input
+    def getValues(self):
+        return [self.id, self.name, self.birthday, self.deathday, self.sex, self.famc, self.fams]
     def __repr__(self):
         return self.id+" "+self.name+" "+self.birthday+" "+self.deathday+" "+self.sex+" "+self.famc+" "+self.fams
 
@@ -42,11 +45,14 @@ class Family:
         self.wife = input
     def setChildren(self, input):
         self.children.append(input)
+    def getValues(self):
+        return self.id, self.marriage, self.divorce, self.husband, self.wife, str(self.children)
     def __repr__(self):
         return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
 
 def printValid(original, level, tag, args, isValid): #print the parsed line in the specified format matching: --> "0 NOTE dates after now \n <-- 0|NOTE|Y|dates after now"
     print(level+"|"+tag+"|"+args)
+
 def addNewInstance(dict, id, type):
     if (type == "F"):
         dict[id] = Family(id)
@@ -75,6 +81,19 @@ def addToInstance(dict, id, tag, args):
         dict[id].setWife(args)
     elif (tag == "CHIL"):
         dict[id].setChildren(args)
+
+def genTables(peopleDict, familyDict):
+    peopleTable = PrettyTable()
+    peopleTable.field_names = ["ID", "Name", "Birth Date", "Death Date", "Sex", "Famc", "Fams"]
+    for item, values in peopleDict.items():
+        peopleTable.add_row(values.getValues())
+    print(peopleTable)
+
+    familyTable = PrettyTable()
+    familyTable.field_names = ["ID", "Marriage Date", "Divorce Date", "Husband", "Wife", "Children"]
+    for item, values in familyDict.items():
+        familyTable.add_row(values.getValues())
+    print(familyTable)
 
 levelZero = ["NOTE", "HEAD", "TRLR"] #possible tags for level zero
 levelZeroWeird = ["INDI", "FAM"] #exceptions to normal format
@@ -111,13 +130,12 @@ for line in input: #More compact, but not as readable:
     elif ((words[0] is "2" and words[1] in levelTwo)): # check for normal valid
         printValid(line, words[0], words[1], ' '.join(words[2:]), "Y")
         addToInstance(currentDict, currentID, currentTag, ' '.join(words[2:]))
-    
     #else: #if it dosen't fit the above condidtions, it is invalid
        # printValid(line, words[0], words[1], ' '.join(words[2:]), "N")
-print("id name birth death sex famc fams")
-for indiv, value in individuals.items():
+
+"""for indiv, value in individuals.items():
     print(value)
 print("")
-print("ID marriage divorce husband wife children")
 for family, value in families.items():
-    print(value)
+    print(value)"""
+genTables(individuals, families)
