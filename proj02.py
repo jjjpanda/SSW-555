@@ -154,5 +154,3 @@ print("")
 for family, value in families.items():
     print(value)"""
 genTables(individuals, families)
-
-print(individuals["@I1@"].getAge())
