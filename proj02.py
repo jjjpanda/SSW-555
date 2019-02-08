@@ -104,13 +104,13 @@ def addToInstance(dict, id, tag, args): #add to individual or family with specif
 def genTables(peopleDict, familyDict): #create prettytables with individuals and families
     peopleTable = PrettyTable() #table for individuals
     peopleTable.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death Date", "Child", "Spouse"]
-    for item, values in peopleDict.items():
+    for item, values in sorted(peopleDict.items()):
         peopleTable.add_row([values.id, values.name, values.sex, datetoString(values.birthday), values.getAge(), values.isAlive(), datetoString(values.deathday), values.famc, values.fams])
     print(peopleTable)
 
     familyTable = PrettyTable() #table for families
     familyTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
-    for item, values in familyDict.items():
+    for item, values in sorted(familyDict.items()):
         familyTable.add_row([values.id, datetoString(values.marriage), datetoString(values.divorce), values.husband, peopleDict[values.husband].name, values.wife, peopleDict[values.wife].name, str(values.children)])
     print(familyTable)
 
