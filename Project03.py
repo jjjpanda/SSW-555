@@ -99,7 +99,7 @@ class Individual: #class for individuals
         self.fams = input
     def isAlive(self):
         return True if self.deathday == "N/A" else False
-    def getAge(self):
+    def getAge(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
         if (self.deathday == "N/A"):
             currentDate = datetime.now()
             return currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
@@ -133,7 +133,7 @@ class Family: #constructor only set id at creation
 def stringToDate(strInput):
     try:
         return datetime.strptime(strInput, "%d %b %Y")
-    except:
+    except: # ---FIX THIS EXCEPTION, THROWING OFF ERROR WHEN CALCULATING AGE ---
         return strInput
 
 def datetoString(dateInput):
