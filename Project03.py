@@ -1,6 +1,7 @@
 import os
 import unittest
 from prettytable import PrettyTable
+from datetime import datetime
 
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
@@ -60,48 +61,88 @@ class GedcomFile:
         self.individual = dict() #an instance of individual will be saved on self.individual[id]
         self.family = dict() #an instance of family will be saved in self.family[id]
 
-    # def individual_prettytable(self):
-    #     """create a prettytable of individuals showing all their info"""
-    #     individual_pt = PrettyTable()
-    #     individual_pt.field_names = ['ID', 'Name', 'Gender', 'Birthday']
+    def genTables(self, peopleDict, familyDict): #create prettytables with individuals and families
+        peopleTable = PrettyTable() #table for individuals
+        peopleTable.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Alive", "Death Date", "Child", "Spouse"]
+        for item, values in sorted(peopleDict.items()):
+            peopleTable.add_row([values.id, values.name, values.sex, datetoString(values.birthday), values.getAge(), values.isAlive(), datetoString(values.deathday), values.famc, values.fams])
+        print(peopleTable)
+
+        familyTable = PrettyTable() #table for families
+        familyTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
+        for item, values in sorted(familyDict.items()):
+            familyTable.add_row([values.id, datetoString(values.marriage), datetoString(values.divorce), values.husband, peopleDict[values.husband].name, values.wife, peopleDict[values.wife].name, str(values.children)])
+        print(familyTable)
 
 
+class Individual: #class for individuals
+    def __init__(self, id): #constructor only set id at creation
+        self.id = id
+        self.name = "N/A"
+        self.birthday = "N/A"
+        self.deathday = "N/A"
+        self.sex = "N/A"
+        self.famc = "N/A"
+        self.fams = "N/A"
+    #setter methods to change values
+    def setName(self, input):
+        self.name = input
+    def setBirthday(self, input):
+        self.birthday = stringToDate(input)
+    def setDeathday(self, input):
+        self.deathday = stringToDate(input)
+    def setSex(self, input):
+        self.sex = input
+    def setFamc(self, input):
+        self.famc = input
+    def setFams(self, input):
+        self.fams = input
+    def isAlive(self):
+        return True if self.deathday == "N/A" else False
+    def getAge(self):
+        if (self.deathday == "N/A"):
+            currentDate = datetime.now()
+            return currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
+        else:
+            return self.deathday.year - self.birthday.year - ((self.deathday.month, self.deathday.day) < (self.birthday.month, self.birthday.day))
+    def __repr__(self): #to string method
+        return self.id+" "+self.name+" "+self.birthday+" "+self.deathday+" "+self.sex+" "+self.famc+" "+self.fams
 
-class Individual:
-    """Defines an individual and all possible charactersitics of an individual:
-    Unique individual ID, Name, Sex/Gender, Birth date, Death date, 
-    Unique Family ID where the individual is a child, Unique Family ID where the individual is a spouse"""
-    def __init__(self, iid):
-        self.id = iid
-        self.name = ""
-        self.gender = ""
-        self.birth = ""
-        self.death = ""
-        self.child = ""
-        self.spouse = ""
-    
-    def __str__(self):
-        #return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
-        return str([self.id, self.name, self.gender, self.birth, self.death, self.child, self.spouse])
+class Family: #constructor only set id at creation
+    def __init__(self, id):
+        self.id = id
+        self.marriage = "N/A"
+        self.divorce = "N/A"
+        self.husband = "N/A"
+        self.wife = "N/A"
+        self.children = []
+    #setter methods to change values
+    def setMarriage(self, input):
+        self.marriage = stringToDate(input)
+    def setDivorce(self, input):
+        self.divorce = stringToDate(input)
+    def setHusband(self, input):
+        self.husband = input
+    def setWife(self, input):
+        self.wife = input
+    def setChildren(self, input): #adds children ids to list of children
+        self.children.append(input)
+    def __repr__(self): #to string method
+        return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
 
-class Family:
-    """Defines a family and all possible characteristics of a family:
-    Unique family ID, Unique individual ID of husband, Unique individual ID of wife, 
-    Unique individual ID of each child in the family, Marriage date, Divorce date, if appropriate"""
+def stringToDate(strInput):
+    try:
+        return datetime.strptime(strInput, "%d %b %Y")
+    except:
+        return strInput
 
-    def __init__(self, fid):
-        self.id = fid
-        self.husband = ""
-        self.wife = ""
-        self.child = []
-        self.marriage = ""
-        self.divorce = ""
+def datetoString(dateInput):
+    try:
+        return datetime.strftime(dateInput, "%Y-%m-%d")
+    except:
+        return dateInput
 
-    def __str__(self):
-        #return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
-        return str([self.id, self.husband, self.wife, self.child, self.marriage, self.divorce])
 
-    
 
 def gedcom_categorizer(file_name, gedcom):
     validlines_file = os.path.realpath(file_name)
@@ -132,19 +173,19 @@ def gedcom_categorizer(file_name, gedcom):
                 if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual or family
                     # add args to instance of Individual or family
                     if line[1] == "SEX":
-                        gedcom.individual[current_id].gender = line[2]
+                        gedcom.individual[current_id].setSex(line[2])
                     elif line[1] == "NAME":
-                        gedcom.individual[current_id].name = line[2]
+                        gedcom.individual[current_id].setName(line[2])
                     elif line[1] == "FAMC":
-                        gedcom.individual[current_id].child = line[2]
+                        gedcom.individual[current_id].setFamc(line[2])
                     elif line[1] == "FAMS":
-                        gedcom.individual[current_id].spouse = line[2]
+                        gedcom.individual[current_id].setFams(line[2])
                     elif line[1] == "HUSB":
-                        gedcom.family[current_id].husband = line[2]
+                        gedcom.family[current_id].setHusband(line[2])
                     elif line[1] == "WIFE":
-                        gedcom.family[current_id].wife = line[2]
+                        gedcom.family[current_id].setWife(line[2])
                     elif line[1] == "CHIL":
-                        gedcom.family[current_id].child.append(line[2])
+                        gedcom.family[current_id].setChildren(line[2])
                     # if any of the following four are present, set the flag so DATE can be assigned to proper tag
                     elif line[1] == "BIRT":
                         nextbirth = True
@@ -158,17 +199,16 @@ def gedcom_categorizer(file_name, gedcom):
                     # set date to appropriate attribute
                     elif line[1] == "DATE":
                         if nextbirth:
-                            gedcom.individual[current_id].birth = line[2]
+                            gedcom.individual[current_id].setBirthday(line[2])
                             nextbirth = False
-                            #datetime.date.(line[2], "%d %m %Y")
                         elif nextdeath:
-                            gedcom.individual[current_id].death = line[2]
+                            gedcom.individual[current_id].setDeathday(line[2])
                             nextdeath = False
                         elif nextmarriage:
-                            gedcom.family[current_id].marriage = line[2]
+                            gedcom.family[current_id].setMarriage(line[2])
                             nextmarriage = False
                         elif nextdivorce:
-                            gedcom.family[current_id].divorce = line[2]
+                            gedcom.family[current_id].setDivorce(line[2])
                             nextdivorce = False
 
                 
@@ -180,12 +220,9 @@ def main():
     gedcom_cleaner("testFamily.ged")
     gedcom_categorizer("validlines.txt", mygedcom)
 
-    for iid in mygedcom.individual:
-        print(mygedcom.individual[iid])
+    mygedcom.genTables(mygedcom.individual, mygedcom.family)
     
-    for fid in mygedcom.family:
-        print(mygedcom.family[fid])
-
+    
 if __name__ == '__main__':
     main()
     
