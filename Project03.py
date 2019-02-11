@@ -1,7 +1,10 @@
 import os
 import unittest
+from prettytable import PrettyTable
+
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
+Then it extracts individuals and families out of the new clean text file.
 """
 
 def gedcom_cleaner(file_name):
@@ -47,8 +50,8 @@ def gedcom_cleaner(file_name):
                     outFile.write(f"{level}|{tag}|{args}\n")
                 else: #if combination of characters is not allowed in that order, pring with a 'N' flag
                     continue
-
               
+
 class GedcomFile:
     """ Class GedcomFile imports all individual and family 
     data from a Gedcom file and organizes them into dictionaries""" 
@@ -57,23 +60,48 @@ class GedcomFile:
         self.individual = dict() #an instance of individual will be saved on self.individual[id]
         self.family = dict() #an instance of family will be saved in self.family[id]
 
+    # def individual_prettytable(self):
+    #     """create a prettytable of individuals showing all their info"""
+    #     individual_pt = PrettyTable()
+    #     individual_pt.field_names = ['ID', 'Name', 'Gender', 'Birthday']
+
+
 
 class Individual:
     """Defines an individual and all possible charactersitics of an individual:
     Unique individual ID, Name, Sex/Gender, Birth date, Death date, 
     Unique Family ID where the individual is a child, Unique Family ID where the individual is a spouse"""
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, iid):
+        self.id = iid
         self.name = ""
         self.gender = ""
         self.birth = ""
         self.death = ""
         self.child = ""
         self.spouse = ""
+    
+    def __str__(self):
+        #return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
+        return str([self.id, self.name, self.gender, self.birth, self.death, self.child, self.spouse])
+
+class Family:
+    """Defines a family and all possible characteristics of a family:
+    Unique family ID, Unique individual ID of husband, Unique individual ID of wife, 
+    Unique individual ID of each child in the family, Marriage date, Divorce date, if appropriate"""
+
+    def __init__(self, fid):
+        self.id = fid
+        self.husband = ""
+        self.wife = ""
+        self.child = []
+        self.marriage = ""
+        self.divorce = ""
 
     def __str__(self):
-        return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
-        
+        #return str("ID: "+ self.id + "| Name:" + self.name + "| Sex: " + self.gender + "| Birth:" + self.birth+ "| Died:" + self.death + "| Children: " + self.child + "| Spouse:" + self.spouse)
+        return str([self.id, self.husband, self.wife, self.child, self.marriage, self.divorce])
+
+    
 
 def gedcom_categorizer(file_name, gedcom):
     validlines_file = os.path.realpath(file_name)
@@ -85,7 +113,10 @@ def gedcom_categorizer(file_name, gedcom):
         with fp:
 
             current_id = None #initiate current_id variable that will be used when parser sees an instance initiator
-            nexttagbirt = False # set a flag that identifies when the following date is for birth (true) or death (false)
+            nextbirth = False # set a flag that identifies when the following date is for birth (true) or death (false)
+            nextdeath = False
+            nextmarriage = False
+            nextdivorce = False
             
             for line in fp:
                 line = line.rstrip('\n\r').split("|") # split lines into a list
@@ -93,9 +124,13 @@ def gedcom_categorizer(file_name, gedcom):
                 if line[0] == "0" and line[1] == "INDI": # if we identify a new instance of individual, create instance
                     current_id = line[2]
                     gedcom.individual[current_id] = Individual(current_id)
-                                
-                if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual
-                    # add args to instance of Individual
+                
+                if line[0] == "0" and line[1] == "FAM":
+                    current_id = line[2]
+                    gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
+                       
+                if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual or family
+                    # add args to instance of Individual or family
                     if line[1] == "SEX":
                         gedcom.individual[current_id].gender = line[2]
                     elif line[1] == "NAME":
@@ -104,27 +139,52 @@ def gedcom_categorizer(file_name, gedcom):
                         gedcom.individual[current_id].child = line[2]
                     elif line[1] == "FAMS":
                         gedcom.individual[current_id].spouse = line[2]
-                    #if a birth or death is present, set value for flag so following date gets added to the right attribute
+                    elif line[1] == "HUSB":
+                        gedcom.family[current_id].husband = line[2]
+                    elif line[1] == "WIFE":
+                        gedcom.family[current_id].wife = line[2]
+                    elif line[1] == "CHIL":
+                        gedcom.family[current_id].child.append(line[2])
+                    # if any of the following four are present, set the flag so DATE can be assigned to proper tag
                     elif line[1] == "BIRT":
-                        nexttagbirt = True
+                        nextbirth = True
                     elif line[1] == "DEAT":
-                        nexttagbirt = False
+                        nextdeath = True
+                    elif line[1] == "MARR":
+                        nextmarriage = True
+                    elif line[1] == "DIV":
+                        nextdivorce == True
+                    
                     # set date to appropriate attribute
                     elif line[1] == "DATE":
-                        if nexttagbirt:
+                        if nextbirth:
                             gedcom.individual[current_id].birth = line[2]
-                        else:
+                            nextbirth = False
+                            #datetime.date.(line[2], "%d %m %Y")
+                        elif nextdeath:
                             gedcom.individual[current_id].death = line[2]
+                            nextdeath = False
+                        elif nextmarriage:
+                            gedcom.family[current_id].marriage = line[2]
+                            nextmarriage = False
+                        elif nextdivorce:
+                            gedcom.family[current_id].divorce = line[2]
+                            nextdivorce = False
+
                 
+                    
 
 def main():
     mygedcom = GedcomFile()
     
-    gedcom_cleaner("Project01GEDCOM.txt")
+    gedcom_cleaner("testFamily.ged")
     gedcom_categorizer("validlines.txt", mygedcom)
 
-    for ID in mygedcom.individual:
-        print(mygedcom.individual[ID])
+    for iid in mygedcom.individual:
+        print(mygedcom.individual[iid])
+    
+    for fid in mygedcom.family:
+        print(mygedcom.family[fid])
 
 if __name__ == '__main__':
     main()
