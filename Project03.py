@@ -187,7 +187,7 @@ def gedcom_categorizer(inputString, gedcom):
             elif line[1] == "MARR":
                 nextmarriage = True
             elif line[1] == "DIV":
-                nextdivorce == True
+                nextdivorce = True
             
             # set date to appropriate attribute
             elif line[1] == "DATE":
@@ -210,7 +210,7 @@ def gedcom_categorizer(inputString, gedcom):
 def main():
     mygedcom = GedcomFile()
     
-    valid = gedcom_cleaner("hzSprint1test.ged")
+    valid = gedcom_cleaner("testFamily.ged")
     gedcom_categorizer(valid, mygedcom)
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
