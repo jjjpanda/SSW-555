@@ -210,7 +210,7 @@ def gedcom_categorizer(inputString, gedcom):
 def main():
     mygedcom = GedcomFile()
     
-    valid = gedcom_cleaner("testFamily.ged")
+    valid = gedcom_cleaner("hzSprint1test.ged")
     gedcom_categorizer(valid, mygedcom)
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
