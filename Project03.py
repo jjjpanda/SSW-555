@@ -187,7 +187,7 @@ def gedcom_categorizer(inputString, gedcom):
             elif line[1] == "MARR":
                 nextmarriage = True
             elif line[1] == "DIV":
-                nextdivorce == True
+                nextdivorce = True
             
             # set date to appropriate attribute
             elif line[1] == "DATE":
