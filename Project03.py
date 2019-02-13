@@ -2,6 +2,7 @@ import os
 import unittest
 from prettytable import PrettyTable
 from datetime import datetime
+from UserStories1_SH import *
 
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
@@ -102,9 +103,10 @@ class Individual: #class for individuals
     def getAge(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
         if (self.deathday == "N/A"):
             currentDate = datetime.now()
-            return currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
+            age = currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
         else:
-            return self.deathday.year - self.birthday.year - ((self.deathday.month, self.deathday.day) < (self.birthday.month, self.birthday.day))
+            age = self.deathday.year - self.birthday.year - ((self.deathday.month, self.deathday.day) < (self.birthday.month, self.birthday.day))
+        return age if age < 150 else "Age is over 150 years" 
     def __repr__(self): #to string method
         return self.id+" "+self.name+" "+self.birthday+" "+self.deathday+" "+self.sex+" "+self.famc+" "+self.fams
 
@@ -130,11 +132,7 @@ class Family: #constructor only set id at creation
     def __repr__(self): #to string method
         return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
 
-def stringToDate(strInput):
-    try:
-        return datetime.strptime(strInput, "%d %b %Y")
-    except: # ---FIX THIS EXCEPTION, THROWING OFF ERROR WHEN CALCULATING AGE ---
-        return strInput
+# def stringToDate(strInput): MOVED TO UserStories1_SH.py
 
 def datetoString(dateInput):
     try:
@@ -205,7 +203,6 @@ def gedcom_categorizer(inputString, gedcom):
                     nextdivorce = False
 
                 
-                    
 
 def main():
     mygedcom = GedcomFile()
@@ -217,5 +214,6 @@ def main():
     
     
 if __name__ == '__main__':
+    unittest.main(exit = False, verbosity = 2)
     main()
     
