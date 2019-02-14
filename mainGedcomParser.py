@@ -212,7 +212,7 @@ def main():
     
     if len(sys.argv) > 1: 
         try:
-            valid = gedcom_cleaner("gedcoms/"+sys.argv[1])
+            valid = gedcom_cleaner(sys.argv[1])
         except:
             print("can't open file") 
     else:
