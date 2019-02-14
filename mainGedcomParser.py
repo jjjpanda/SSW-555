@@ -3,7 +3,7 @@ import unittest
 from prettytable import PrettyTable
 from datetime import datetime
 import sys
-
+from userstories import hzUserStories
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
 Then it extracts individuals and families out of the new clean text file.
@@ -224,7 +224,7 @@ def main():
     gedcom_categorizer(valid, mygedcom)
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
-    
+    hzUserStories.test(mygedcom.individual, mygedcom.family)
     
 if __name__ == '__main__':
     main()
