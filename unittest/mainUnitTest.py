@@ -1,3 +1,5 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mainGedcomParser as parser
 import unittest
 class TestGedcom(unittest.TestCase):
@@ -5,7 +7,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        #mygedcom.ge nTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertFalse(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
