@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from userstories import 
+import mainGedcomParser as parser
 
 
 
@@ -12,13 +12,17 @@ def datesInFuture(date):
         print("Date ", date, "occurs in the future")
         return True
 
-def ageGreaterThan(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
-    if (self.deathday == "N/A"):
+def ageGreaterThan(individual): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
+    if (individual.deathday == "N/A"):
         upperLimit = datetime.now()
     else:
-        upperLimit = self.deathday
-    age = upperLimit.year - self.birthday.year - ((upperLimit.month, self.deathday.day) < (upperLimit.month, self.birthday.day))
-    return True if age < 150 else False
+        upperLimit = individual.deathday
+    age = upperLimit.year - individual.birthday.year - ((upperLimit.month, individual.deathday.day) < (upperLimit.month, individual.birthday.day))
+    if age < 150:
+        return True
+    else:
+        print("this individual lives more than 150 years") 
+        return False
 
 
 
