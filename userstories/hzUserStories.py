@@ -1,4 +1,3 @@
-import Project03 as parser
 import unittest
 import datetime
 
@@ -26,16 +25,12 @@ def marriageAfterAge(family, husband, wife):
         return False
     return True
 
-def main():
-    mygedcom = parser.GedcomFile()
-    valid = parser.gedcom_cleaner("hzSprint1test.ged")
-    parser.gedcom_categorizer(valid, mygedcom)
-    mygedcom.genTables(mygedcom.individual, mygedcom.family)
+def test(individuals, families):
+    for fam in families.values():
+        divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
+        marriageAfterAge(fam, individuals[fam.husband], individuals[fam.wife])
 
-if __name__ == '__main__':
-    main()
-
-class TestSprintOne(unittest.TestCase):
+'''class TestSprintOne(unittest.TestCase):
     def test_US06(self):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("hzSprint1test.ged")
@@ -59,4 +54,4 @@ class TestSprintOne(unittest.TestCase):
         self.assertFalse(marriageAfterAge(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertTrue(marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
         self.assertFalse(marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
-    
+    '''
