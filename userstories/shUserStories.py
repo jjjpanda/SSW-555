@@ -1,43 +1,54 @@
 import unittest
 from datetime import datetime
+from userstories import 
 
 
-def stringToDate(strInput):
-    """creates datetime objects from the string inputs. 
-    If date happens in the future it prints an error message (US01).
-    If date is given in the wrong format, it prints an error message. 
-    """
-    try:
-        date = datetime.strptime(strInput, "%d %b %Y")
-        if date < datetime.today():
-            return date
-        else:
-            print("Invalid date", strInput, "happens in the future")
-            return("FutureDate")
-    except ValueError: # ---FIX THIS EXCEPTION, THROWING OFF ERROR WHEN CALCULATING AGE ---
-        print("the input", strInput, "is not in the expected format dd mmm yyyy")
-        return strInput
 
-def getAge(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
-    if (self.deathday == "N/A"):
-        currentDate = datetime.now()
-        age = currentDate.year - self.birthday.year - ((currentDate.month, currentDate.day) < (self.birthday.month, self.birthday.day))
+def datesInFuture(date):
+    """ US01: No Date can happen after current date """
+    if date < datetime.today():
+        return True
     else:
-        age = self.deathday.year - self.birthday.year - ((self.deathday.month, self.deathday.day) < (self.birthday.month, self.birthday.day))
-    return age if age < 150 else "Age is over 150 years" 
+        print("Date ", date, "occurs in the future")
+        return True
 
-class GedcomTest(unittest.TestCase):
-    def test_us01(self):
-        """ Tests that all dates happen before current date """
-        # self.assertEqual(str(stringToDate("3 AUG 1942")), "1942-08-03 00:00:00")
-        self.assertEqual(stringToDate("3 AUG 2042"), "FutureDate")
-        self.assertEqual(stringToDate("12 FEB 2022"), "FutureDate")
-        # with self.assertRaises(ValueError):
-        #     stringToDate("35 SEPTEMBER 2011")
-    # def test_us07(self):
-    #     self.assertEqual(getAge)   
+def ageGreaterThan(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
+    if (self.deathday == "N/A"):
+        upperLimit = datetime.now()
+    else:
+        upperLimit = self.deathday
+    age = upperLimit.year - self.birthday.year - ((upperLimit.month, self.deathday.day) < (upperLimit.month, self.birthday.day))
+    return True if age < 150 else False
+
+
+
+class SprintOneTest(unittest.TestCase):
+    """
+    @I1@ lives longer than 150
+    @I2@ is born and dies in the future 
+    """
+    def test_datesInFuture(self):
+        """ Tests US01: No Date can happen after current date """
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("shSprint1Test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertTrue(datesInFuture(mygedcom.individual["@I2@"].deathday))
+        self.assertFalse(datesInFuture(mygedcom.individual["@I1@"].birthday))
+        self.assertTrue(datesInFuture(mygedcom.individual["@I2@"].birthday))
+
+    def test_ageGreaterThan(self):
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("shSprint1Test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertTrue(datesInFuture(mygedcom.individual["@I2@"].deathday))
+        self.assertFalse(datesInFuture(mygedcom.individual["@I1@"].birthday))
+        self.assertTrue(datesInFuture(mygedcom.individual["@I2@"].birthday))
+   
 
 
 if __name__ == '__main__':
+    # main()
     unittest.main(exit = False, verbosity = 2)
     
