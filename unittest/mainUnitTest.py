@@ -5,7 +5,7 @@ import unittest
 class TestGedcom(unittest.TestCase):
     def test_US06(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("gedcoms/hzSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         #mygedcom.ge nTables(mygedcom.individual, mygedcom.family)
 
@@ -17,7 +17,7 @@ class TestGedcom(unittest.TestCase):
     
     def test_US10(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("gedcoms/hzSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         #mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
