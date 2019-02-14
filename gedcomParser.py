@@ -210,7 +210,7 @@ def gedcom_categorizer(inputString, gedcom):
 def main():
     mygedcom = GedcomFile()
     
-    if len(sys.argv[1]) > 1: 
+    if len(sys.argv) > 1: 
         try:
             valid = gedcom_cleaner("gedcom/"+sys.argv[1])
         except:
