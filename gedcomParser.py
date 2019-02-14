@@ -2,7 +2,7 @@ import os
 import unittest
 from prettytable import PrettyTable
 from datetime import datetime
-
+import sys
 
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
@@ -210,7 +210,17 @@ def gedcom_categorizer(inputString, gedcom):
 def main():
     mygedcom = GedcomFile()
     
-    valid = gedcom_cleaner("gedcoms/testFamily.ged")
+    if len(sys.argv[1]) > 1: 
+        try:
+            valid = gedcom_cleaner("gedcom/"+sys.argv[1])
+        except:
+            print("can't open file") 
+    else:
+        try:
+            valid = gedcom_cleaner("gedcom/testFamily.ged")
+        except:
+            print("can't open file")  
+
     gedcom_categorizer(valid, mygedcom)
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
