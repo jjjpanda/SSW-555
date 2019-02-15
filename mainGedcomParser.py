@@ -225,7 +225,7 @@ def main():
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
     hzUserStories.main(mygedcom.individual, mygedcom.family)
-    shUserStories.test(mygedcom.individual)
+    shUserStories.test(mygedcom.individual, mygedcom.family)
     
 if __name__ == '__main__':
     main()
