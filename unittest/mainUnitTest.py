@@ -2,6 +2,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import mainGedcomParser as parser
 import unittest
+
 class TestGedcom(unittest.TestCase):
     def test_US06(self):
         mygedcom = parser.GedcomFile()
@@ -26,3 +27,43 @@ class TestGedcom(unittest.TestCase):
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
+
+    def test_US01(self):
+        """ Tests US01: No Date can happen after current date. 
+        Tests that any given individual / family has only valid dates.
+                True: Date is valid
+                False: Date is invalid because is in the future
+        """
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("../gedcoms/shSprint1Test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I2@"]))
+        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I1@"]))
+        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I3@"]))
+        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I4@"]))
+        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I5@"]))
+        self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I6@"]))
+
+        self.assertTrue(parser.shUserStories.FDatesInFuture(mygedcom.family["@F2@"]))
+        self.assertTrue(parser.shUserStories.FDatesInFuture(mygedcom.family["@F1@"]))
+        self.assertFalse(parser.shUserStories.FDatesInFuture(mygedcom.family["@F3@"]))
+        self.assertIsInstance(mygedcom.family["@F1@"], parser.Family)
+        self.assertNotIsInstance(mygedcom.family["@F1@"], parser.Individual)
+
+    def test_US07(self):
+        """ Tests US01: No Date can happen after current date. 
+        Tests that any given individual has only valid dates.
+                True: Date is valid
+                False: Date is invalid because is in the future
+        """
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("../gedcoms/shSprint1Test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I1@"]))
+        self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I2@"]))
+        self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I3@"]))
+        self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I4@"]))
+        self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I5@"]))
+        self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I6@"]))
