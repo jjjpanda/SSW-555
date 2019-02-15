@@ -3,7 +3,7 @@ import unittest
 from prettytable import PrettyTable
 from datetime import datetime
 import sys
-from userstories import *
+from userstories import hzUserStories, jpUserStories, shUserStories, eaUserStories
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
 Then it extracts individuals and families out of the new clean text file.
