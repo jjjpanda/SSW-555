@@ -2,13 +2,24 @@ import unittest
 from datetime import datetime
 
 
-def datesInFuture(date):
-    """ US01: No Date can happen after current date """
-    if date < datetime.today():
-        return True
-    else:
-        print("Date ", date, "occurs in the future")
-        return True
+def IDatesInFuture(individuals):
+    """ US01: No Date in individuals can happen after current date """
+    for date in [individuals.birthday, individuals.deathday]:
+        if date != "N/A":
+            if date < datetime.today():
+                return True
+            else:
+                print("ERROR: INDIVIDUAL: US01: Date", date, "occurs in the future")
+                return False
+def FDatesInFuture(families):
+    """ US01: No Date in a family can happen after current date """
+    for date in [families.marriage, families.divorce]:
+        if date != "N/A":
+            if date < datetime.today():
+                return True
+            else:
+                print("ERROR: FAMILY: US01: Date", date, "occurs in the future")
+                return False
 
 def ageGreaterThan(individual): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
     if (individual.deathday == "N/A"):
@@ -19,23 +30,16 @@ def ageGreaterThan(individual): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE 
     if age < 150:
         return True
     else:
-        print("individual named", individual.name, "lives more than 150 years") 
+        print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
         return False
 
 def test(individuals, families):
     for indi in individuals.values():
         ageGreaterThan(indi)
-        for date in [indi.birthday, indi.deathday]:
-            if date != "N/A":
-                datesInFuture(date)
-            else:
-                continue
+        IDatesInFuture(indi)
     for fam in families.values():
-        for date in [fam.marriage, fam.divorce]:
-            if date != "N/A":
-                datesInFuture(date)
-            else:
-                continue
+        FDatesInFuture(fam)
+
 
 # class SprintOneTest(unittest.TestCase):
 #     """
