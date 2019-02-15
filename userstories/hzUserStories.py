@@ -25,33 +25,7 @@ def marriageAfterAge(family, husband, wife):
         return False
     return True
 
-def test(individuals, families):
+def main(individuals, families):
     for fam in families.values():
         divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
         marriageAfterAge(fam, individuals[fam.husband], individuals[fam.wife])
-
-'''class TestSprintOne(unittest.TestCase):
-    def test_US06(self):
-        mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("hzSprint1test.ged")
-        parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
-
-        self.assertTrue(divorceBeforeDeath(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertFalse(divorceBeforeDeath(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
-        self.assertFalse(divorceBeforeDeath(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(divorceBeforeDeath(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
-        self.assertTrue(divorceBeforeDeath(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
-    
-    def test_US10(self):
-        mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("hzSprint1test.ged")
-        parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
-
-        self.assertFalse(marriageAfterAge(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertTrue(marriageAfterAge(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
-        self.assertFalse(marriageAfterAge(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
-        self.assertFalse(marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
-    '''

@@ -224,7 +224,7 @@ def main():
     gedcom_categorizer(valid, mygedcom)
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
-    hzUserStories.test(mygedcom.individual, mygedcom.family)
+    hzUserStories.main(mygedcom.individual, mygedcom.family)
     
 if __name__ == '__main__':
     main()
