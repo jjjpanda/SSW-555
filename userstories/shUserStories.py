@@ -22,10 +22,16 @@ def ageGreaterThan(individual): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE 
         print("individual named", individual.name, "lives more than 150 years") 
         return False
 
-def test(individuals):
+def test(individuals, families):
     for indi in individuals.values():
         ageGreaterThan(indi)
         for date in [indi.birthday, indi.deathday]:
+            if date != "N/A":
+                datesInFuture(date)
+            else:
+                continue
+    for fam in families.values():
+        for date in [fam.marriage, fam.divorce]:
             if date != "N/A":
                 datesInFuture(date)
             else:
