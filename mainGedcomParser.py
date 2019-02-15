@@ -4,9 +4,11 @@ from prettytable import PrettyTable
 from datetime import datetime
 import sys
 from userstories import hzUserStories
+from userstories import shUserStories
+
 """
-This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements.
-Then it extracts individuals and families out of the new clean text file.
+This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements, and places lines into a string.
+Then it extracts instances of individuals and families out of those lines.
 """
 
 def gedcom_cleaner(file_name):
@@ -225,6 +227,7 @@ def main():
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
     hzUserStories.test(mygedcom.individual, mygedcom.family)
+    shUserStories.test(mygedcom.individual)
     
 if __name__ == '__main__':
     main()
