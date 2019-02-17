@@ -1,6 +1,8 @@
+import sys
+sys.dont_write_bytecode = True
+
 import unittest
 from datetime import datetime
-
 
 def IDatesInFuture(individuals):
     """ US01: No Date in individuals can happen after current date.
@@ -45,7 +47,7 @@ def ageGreaterThan(individual):
         print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
         return False
 
-def test(individuals, families):
+def main(individuals, families):
     for indi in individuals.values():
         ageGreaterThan(indi)
         IDatesInFuture(indi)
