@@ -1,15 +1,28 @@
-from collections import Counter
+import sys
+sys.dont_write_bytecode = True
 
-def marriageBeforeDivorce(dateOfMarriage, dateOfDivorce):
-    if (dateOfDivorce == "" or dateOfMarriage < dateOfDivorce):
+import datetime
+
+def marriageBeforeDivorce(family):
+    """US04: Marriage should occur before divorce of spouses, and divorce can only occur after marriage"""
+    if family.divorce == "N/A" or family.divorce > family.marriage:
         return True
+    if family.divorce != "N/A" or family.divorce < family.marriage:
+        print(f"ERROR: (US04) Marriage in family ({family.id}) occurrs after death.")
+        return False
 
-    else :
-          return False
-
-def marriageBeforeDeath(dateOfMarriage, husband, wife):
-    if (dateOfMarriage > husband.deathday and dateOfMarriage > wife.deathday):
-        return True
-
+def marriageBeforeDeath(family, husband, wife):
+    """US05: Marriage should occur before death of either spouse"""
+    if not husband.isAlive() and family.marriage > husband.deathday:
+        print(f"ERROR: (US05) Marriage in family ({family.id}) occurrs after death of ({husband.name}) ID: ({husband.id}).")
+        return False
+    if not wife.isAlive() and family.marriage > wife.deathday:
+        print(f"ERROR: (US05) Marriage in family ({family.id}) occurrs after death of ({wife.name}) ID: ({wife.id}).")
+        return False
     else:
-         return False
+        return True
+
+def main(individuals, families):
+    for fam in families.values():
+        marriageBeforeDivorce(fam)
+        marriageBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
