@@ -1,8 +1,10 @@
+import sys
+sys.dont_write_bytecode = True
+
 import os
 import unittest
 from prettytable import PrettyTable
 from datetime import datetime
-import sys
 from userstories import hzUserStories, jpUserStories, shUserStories, eaUserStories
 """
 This python app reads a GEDCOM file and filters out lines that are not valid per the project requirements, and places lines into a string.
@@ -225,8 +227,10 @@ def main():
 
     mygedcom.genTables(mygedcom.individual, mygedcom.family)
     hzUserStories.main(mygedcom.individual, mygedcom.family)
-    shUserStories.test(mygedcom.individual, mygedcom.family)
-    
+    shUserStories.main(mygedcom.individual, mygedcom.family)
+    jpUserStories.main(mygedcom.individual, mygedcom.family)
+    eaUserStories.main(mygedcom.individual, mygedcom.family)
+
 if __name__ == '__main__':
     main()
     
