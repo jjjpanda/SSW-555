@@ -35,20 +35,26 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F1@"]))
         self.assertFalse(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F2@"]))
         self.assertTrue(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F3@"]))
+        self.assertTrue(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F4@"]))
+        self.assertTrue(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F5@"]))
         
     def test_US05(self):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertTrue(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
         self.assertFalse(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-   
+        self.assertTrue(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
+        self.assertTrue(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
+
     def test_US06(self):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
