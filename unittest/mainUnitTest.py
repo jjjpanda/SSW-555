@@ -97,4 +97,4 @@ class TestGedcom(unittest.TestCase):
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
