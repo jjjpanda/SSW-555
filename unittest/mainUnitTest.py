@@ -31,6 +31,39 @@ class TestGedcom(unittest.TestCase):
         self.assertIsInstance(mygedcom.family["@F1@"], parser.Family)
         self.assertNotIsInstance(mygedcom.family["@F1@"], parser.Individual)
    
+    def test_US02(self):
+        """ Tests US02: Birth should occurr before marriage of an individual. 
+        Tests that any given individual is born before they die.
+                True: Birth before marriage
+                False: Marriage before birth
+        """
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F4@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I2@"], mygedcom.family["@F1@"]))
+        self.assertFalse(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I4@"], mygedcom.family["@F2@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I8@"], mygedcom.family["@F3@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I9@"], mygedcom.family["@F5@"]))
+
+    def test_US03(self):
+        """ Tests US02: Birth should occurr before death of an individual. 
+        Tests that any given individual is born before they die.
+                True: Birth before death
+                False: Death before birth
+        """
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+
+        self.assertFalse(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I2@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I1@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I3@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I4@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I5@"]))
+
+ 
     def test_US04(self):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
