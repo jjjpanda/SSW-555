@@ -41,11 +41,11 @@ class TestGedcom(unittest.TestCase):
         valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
 
-        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F4@"]))
+        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F1@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I2@"], mygedcom.family["@F1@"]))
         self.assertFalse(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I4@"], mygedcom.family["@F2@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I8@"], mygedcom.family["@F3@"]))
-        self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I9@"], mygedcom.family["@F5@"]))
+        self.assertFalse(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I9@"], mygedcom.family["@F3@"]))
 
     def test_US03(self):
         """ Tests US02: Birth should occurr before death of an individual. 
