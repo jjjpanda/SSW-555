@@ -15,7 +15,7 @@ class TestGedcom(unittest.TestCase):
                 False: Date is invalid because is in the future
         """
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
 
         self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I2@"]))
@@ -38,7 +38,7 @@ class TestGedcom(unittest.TestCase):
                 False: Marriage before birth
         """
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
 
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F4@"]))
@@ -54,7 +54,7 @@ class TestGedcom(unittest.TestCase):
                 False: Death before birth
         """
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
 
         self.assertFalse(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I2@"]))
@@ -66,7 +66,7 @@ class TestGedcom(unittest.TestCase):
  
     def test_US04(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
@@ -78,7 +78,7 @@ class TestGedcom(unittest.TestCase):
         
     def test_US05(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
@@ -90,7 +90,7 @@ class TestGedcom(unittest.TestCase):
 
     def test_US06(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         #mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
@@ -107,7 +107,7 @@ class TestGedcom(unittest.TestCase):
                 False: Date is invalid because is in the future
         """
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
 
         self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I1@"]))
@@ -119,7 +119,7 @@ class TestGedcom(unittest.TestCase):
 
     def test_US10(self):
         mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
+        valid = parser.gedcom_cleaner("../gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         #mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
