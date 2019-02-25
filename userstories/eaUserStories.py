@@ -7,7 +7,7 @@ def birthBeforeMarriage(individual, family):
     if family.marriage == "N/A":
         return True
 
-    if individual.birthday > family.marraige:
+    if individual.birthday > family.marriage:
         print(f"ERROR: (US02) Individual ({individual.id}) was married before they were born")
         return False
     else:
@@ -25,5 +25,6 @@ def birthBeforeDeath(individual):
 
 def main(individuals, families):
     for person in individuals.values():
-        birthBeforeMarriage(person, families[person.fams])
+        if (person.fams != "N/A"):
+            birthBeforeMarriage(person, families[person.fams])
         birthBeforeDeath(person)
