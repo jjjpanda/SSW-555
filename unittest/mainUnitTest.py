@@ -17,6 +17,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I2@"]))
         self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I1@"]))
@@ -40,6 +41,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F1@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I2@"], mygedcom.family["@F1@"]))
@@ -56,6 +58,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I2@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I1@"]))
@@ -92,7 +95,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertFalse(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
@@ -109,6 +112,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I1@"]))
         self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I2@"]))
@@ -121,7 +125,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
