@@ -9,7 +9,7 @@ def divorceBeforeDeath(family, husband, wife):
     if family.divorce == "N/A" or husband.deathday == "N/A" or wife.deathday == "N/A": #if no divorce or one parent alive, then valid
         return True
     if husband.deathday <= family.divorce and wife.deathday <= family.divorce: #if both are dead before divorce, then invalid
-        print(f"ERROR: (US06) Both spouses in family ({family.id}) died before a divorce occurred")
+        print(f"ERROR: FAMILY: US06: Both spouses in family ({family.id}) died before a divorce occurred")
         return False
     return True
 
@@ -21,10 +21,10 @@ def yearDifference(date1, date2):
 def marriageAfterAge(family, husband, wife):
     """Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)"""
     if yearDifference(husband.birthday, family.marriage) < 14: #if husband is < 14, then invalid
-        print(f"ERROR: (US10) Husband ({husband.id}: {husband.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, husband.birthday)}) when he got married")
+        print(f"ERROR: FAMILY: US10: Husband ({husband.id}: {husband.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, husband.birthday)}) when he got married")
         return False
     if yearDifference(family.marriage, wife.birthday) < 14: #if wife is < 14, then invalid
-        print(f"ERROR: (US10) Wife ({wife.id}: {wife.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, wife.birthday)}) when she got married")
+        print(f"ERROR: FAMILY: US10: Wife ({wife.id}: {wife.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, wife.birthday)}) when she got married")
         return False
     return True
 
