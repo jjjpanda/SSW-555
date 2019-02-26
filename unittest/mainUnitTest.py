@@ -9,14 +9,11 @@ import unittest
 
 class TestGedcom(unittest.TestCase):
     def test_US01(self):
-        """ Tests US01: No Date can happen after current date. 
-        Tests that any given individual / family has only valid dates.
-                True: Date is valid
-                False: Date is invalid because is in the future
-        """
+        print("----------US_01 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I2@"]))
         self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I1@"]))
@@ -32,14 +29,11 @@ class TestGedcom(unittest.TestCase):
         self.assertNotIsInstance(mygedcom.family["@F1@"], parser.Individual)
    
     def test_US02(self):
-        """ Tests US02: Birth should occurr before marriage of an individual. 
-        Tests that any given individual is born before they die.
-                True: Birth before marriage
-                False: Marriage before birth
-        """
+        print("----------US_02 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family["@F1@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I2@"], mygedcom.family["@F1@"]))
@@ -48,14 +42,11 @@ class TestGedcom(unittest.TestCase):
         self.assertFalse(parser.eaUserStories.birthBeforeMarriage(mygedcom.individual["@I9@"], mygedcom.family["@F3@"]))
 
     def test_US03(self):
-        """ Tests US02: Birth should occurr before death of an individual. 
-        Tests that any given individual is born before they die.
-                True: Birth before death
-                False: Death before birth
-        """
+        print("----------US_03 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/eaSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I2@"]))
         self.assertTrue(parser.eaUserStories.birthBeforeDeath(mygedcom.individual["@I1@"]))
@@ -65,6 +56,7 @@ class TestGedcom(unittest.TestCase):
 
  
     def test_US04(self):
+        print("----------US_04 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
@@ -77,6 +69,7 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.marriageBeforeDivorce(mygedcom.family["@F5@"]))
         
     def test_US05(self):
+        print("----------US_05 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/jpSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
@@ -89,10 +82,11 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.marriageBeforeDeath(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
     def test_US06(self):
+        print("----------US_06 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertFalse(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
@@ -101,14 +95,11 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.hzUserStories.divorceBeforeDeath(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
     def test_US07(self):
-        """ Tests US01: No Date can happen after current date. 
-        Tests that any given individual has only valid dates.
-                True: Date is valid
-                False: Date is invalid because is in the future
-        """
+        print("----------US_07 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/shSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I1@"]))
         self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I2@"]))
@@ -118,10 +109,11 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I6@"]))
 
     def test_US10(self):
+        print("----------US_10 Testing----------")
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint1test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
