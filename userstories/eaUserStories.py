@@ -2,8 +2,9 @@
 import sys
 sys.dont_write_bytecode = True
 import unittest
-import datetime
+from datetime import datetime, timedelta
 
+#US02
 def birthBeforeMarriage(individual, family):
     if family.marriage == "N/A":
         return True
@@ -14,6 +15,7 @@ def birthBeforeMarriage(individual, family):
     else:
         return True
 
+#US03
 def birthBeforeDeath(individual):
     if individual.deathday == "N/A":
         return True
@@ -23,6 +25,19 @@ def birthBeforeDeath(individual):
         return False
     else:
         return True
+
+#US12 Mom less than 60 years older, dad less than 80 years older
+def parentsNotTooOld(individual, dad, mom):
+    momBirth = mom.birthday + timedelta(days=365*60)
+    dadBirth = dad.birthday + timedelta(days=365*80)
+
+    if(momBirth < individual.birthday or dadBirth < individual.birthday):
+        print(f"ERROR: FAMILY: US12: Individual ({individual.id}) parent(s) is/are too old to give birth")
+
+    if(momBirth > individual.birthday and dadBirth > individual.birthday):
+        return True
+    
+
 
 def main(individuals, families):
     for person in individuals.values():
