@@ -8,7 +8,7 @@ def marriageBeforeDivorce(family):
     if family.divorce == "N/A" or family.divorce > family.marriage:
         return True
     if family.divorce != "N/A" or family.divorce < family.marriage:
-        print(f"ERROR: FAMILY: US04: Marriage in family ({family.id}) occurrs after death.")
+        print(f"ERROR: FAMILY: US04: Marriage in family ({family.id}) occurrs after divorce.")
         return False
 
 def marriageBeforeDeath(family, husband, wife):
