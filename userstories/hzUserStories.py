@@ -19,7 +19,7 @@ def yearDifference(date1, date2):
     return abs(date2.year - date1.year - ((date2.month, date2.day) < (date1.month, date1.day)))
 
 def marriageAfterAge(family, husband, wife):
-    """Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)"""
+    """US10: Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)"""
     if yearDifference(husband.birthday, family.marriage) < 14: #if husband is < 14, then invalid
         print(f"ERROR: FAMILY: US10: Husband ({husband.id}: {husband.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, husband.birthday)}) when he got married")
         return False
@@ -28,7 +28,29 @@ def marriageAfterAge(family, husband, wife):
         return False
     return True
 
+def noMoreThanQuintuplets(family, individuals):
+    """US14: No more than five siblings should be born at the same time"""
+    birthdays = []
+    for sibling in family.children:
+        birthdays.append(individuals[sibling].birthday)
+    for birthday in birthdays:
+        if birthdays.count(birthday) > 5:
+            print(f"ERROR: FAMILY: US14: Family ({family.id}) has > 5 siblings ({birthdays.count(birthday)}) with the same birthday ({birthday.strftime('%Y-%m-%d')})")
+            return False
+    return True
+
+def fewerThanFifteenSiblings(family):
+    """US15: There should be fewer than 15 siblings in a family"""
+    if len(family.children) < 15:
+        return True
+    else:
+        print(f"ERROR: FAMILY: US15: Family ({family.id}) has > 15 siblings ({len(family.children)})")
+        return False
+
+
 def main(individuals, families):
     for fam in families.values():
         divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
         marriageAfterAge(fam, individuals[fam.husband], individuals[fam.wife])
+        noMoreThanQuintuplets(fam, individuals)
+        fewerThanFifteenSiblings(fam)
