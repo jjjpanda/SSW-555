@@ -121,5 +121,27 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
+    def test_US14(self):
+        print("----------US_14 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/hzSprint2test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertTrue(parser.hzUserStories.noMoreThanQuintuplets(mygedcom.family["@F1@"], mygedcom.individual))
+        self.assertFalse(parser.hzUserStories.noMoreThanQuintuplets(mygedcom.family["@F2@"], mygedcom.individual))
+        self.assertTrue(parser.hzUserStories.noMoreThanQuintuplets(mygedcom.family["@F3@"], mygedcom.individual))
+
+    def test_US15(self):
+        print("----------US_15 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/hzSprint2test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertTrue(parser.hzUserStories.fewerThanFifteenSiblings(mygedcom.family["@F1@"]))
+        self.assertFalse(parser.hzUserStories.fewerThanFifteenSiblings(mygedcom.family["@F2@"]))
+        self.assertTrue(parser.hzUserStories.fewerThanFifteenSiblings(mygedcom.family["@F3@"]))
+
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
