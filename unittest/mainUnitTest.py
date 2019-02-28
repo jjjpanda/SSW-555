@@ -115,12 +115,11 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertFalse(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I16@"]))
-        self.assertTrue(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I15@"]))
-        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I3@"]))
-        # self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I4@"]))
-        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I5@"]))
-        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I6@"]))
+        self.assertFalse(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I9@"], mygedcom.family[mygedcom.individual["@I9@"].famc]))
+        self.assertFalse(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I5@"], mygedcom.family[mygedcom.individual["@I5@"].famc]))
+        self.assertTrue(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I6@"], mygedcom.family[mygedcom.individual["@I6@"].famc]))
+        self.assertFalse(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I1@"], mygedcom.family[mygedcom.individual["@I1@"].famc]))
+        self.assertTrue(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I7@"], mygedcom.family[mygedcom.individual["@I7@"].famc]))
 
 
     def test_US10(self):
