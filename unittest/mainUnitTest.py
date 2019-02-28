@@ -142,11 +142,11 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertFalse(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertTrue(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I5@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I6@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family["@F8@"].husband], mygedcom.individual[mygedcom.family["@F6@"].wife]))
+        self.assertFalse(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I1@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].wife]))
+        self.assertFalse(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I5@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].wife]))
+        self.assertFalse(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I6@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].wife]))
+        self.assertFalse(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].wife]))
+        self.assertTrue(parser.eaUserStories.parentsNotTooOld(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife]))
     
     def test_US14(self):
         print("----------US_14 Testing----------")

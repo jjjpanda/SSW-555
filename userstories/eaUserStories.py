@@ -33,6 +33,7 @@ def parentsNotTooOld(individual, dad, mom):
 
     if(momBirth < individual.birthday or dadBirth < individual.birthday):
         print(f"ERROR: FAMILY: US12: Individual ({individual.id}) parent(s) is/are too old to give birth")
+        return False
 
     if(momBirth > individual.birthday and dadBirth > individual.birthday):
         return True
