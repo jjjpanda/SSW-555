@@ -47,12 +47,29 @@ def ageGreaterThan(individual):
         print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
         return False
 
+def birthBeforeMarriage(individuals):
+    """ US08: Children should be born after marriage of parents 
+    and not more than 9 months after their divorce"""
+    for child, family in individuals, family[individuals.famc]:
+        if child.birthday < family.marriage:
+            return False
+        else:
+            return True
+
+
+def birthBeforeDeath():
+    """ US09: Child should be born before death of mother 
+    and before 9 months after death of father """
+
+
+
 def main(individuals, families):
     for indi in individuals.values():
         ageGreaterThan(indi)
         IDatesInFuture(indi)
     for fam in families.values():
         FDatesInFuture(fam)
-
+    for indi, fam in individuals.values(), families.values():
+        birthBeforeMarriage(indi, fam)
 
     

@@ -108,6 +108,21 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I5@"]))
         self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I6@"]))
 
+    def test_US08(self):
+        print("----------US_08 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/shSprint2test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertFalse(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I16@"]))
+        self.assertTrue(parser.shUserStories.birthBeforeMarriage(mygedcom.individual["@I15@"]))
+        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I3@"]))
+        # self.assertFalse(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I4@"]))
+        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I5@"]))
+        # self.assertTrue(parser.shUserStories.ageGreaterThan(mygedcom.individual["@I6@"]))
+
+
     def test_US10(self):
         print("----------US_10 Testing----------")
         mygedcom = parser.GedcomFile()
