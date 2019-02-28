@@ -2,7 +2,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def IDatesInFuture(individuals):
     """ US01: No Date in individuals can happen after current date.
@@ -47,19 +47,30 @@ def ageGreaterThan(individual):
         print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
         return False
 
-def birthBeforeMarriage(individuals):
+def birthBeforeMarriage(individual, family):
     """ US08: Children should be born after marriage of parents 
     and not more than 9 months after their divorce"""
-    for child, family in individuals, family[individuals.famc]:
-        if child.birthday < family.marriage:
+    if individual.birthday < family.marriage and individual.famc != "N/A":
+        print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born before his/her parents got married")
+        return False
+    if family.divorce != "N/A":
+        if individual.birthday > (family.divorce + timedelta(days=30*9)):
+            print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born over 9 months after his parents divorce")
             return False
-        else:
-            return True
+    else:
+        return True
 
-
-def birthBeforeDeath():
+def birthBeforeDeath(individual, family):
     """ US09: Child should be born before death of mother 
     and before 9 months after death of father """
+    if individual.birthday < family.marriage and individual.famc != "N/A":
+        print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born before his/her parents got married")
+        return False
+    else:
+        return True
+
+
+
 
 
 
@@ -69,7 +80,6 @@ def main(individuals, families):
         IDatesInFuture(indi)
     for fam in families.values():
         FDatesInFuture(fam)
-    for indi, fam in individuals.values(), families.values():
-        birthBeforeMarriage(indi, fam)
-
-    
+    for individuals in individuals.values():
+        if individuals.famc != "N/A":
+            birthBeforeMarriage(individuals, families[individuals.famc])
