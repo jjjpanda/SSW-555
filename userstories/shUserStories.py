@@ -78,14 +78,13 @@ def birthBeforeDeath(individual, mom, dad):
 
 
 def main(individuals, families):
-    for indi in individuals.values():
-        ageGreaterThan(indi)
-        IDatesInFuture(indi)
     
     for fam in families.values():
         FDatesInFuture(fam)
     
     for individual in individuals.values():
+        ageGreaterThan(individual)
+        IDatesInFuture(individual)
         if individual.famc != "N/A":
             birthBeforeMarriage(individual, families[individual.famc])
             birthBeforeDeath(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
