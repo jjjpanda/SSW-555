@@ -22,7 +22,16 @@ def marriageBeforeDeath(family, husband, wife):
     else:
         return True
 
+
+def incest(family, husband, wife):
+    """US18: Siblings should not marry one another"""
+
+def correctGender(family, husband, wife):
+    """US21: Husband in family should be male and wife in family should be female"""
+
 def main(individuals, families):
     for fam in families.values():
         marriageBeforeDivorce(fam)
         marriageBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
+        incest(fam, individuals[fam.husband], individuals[fam.wife])
+        correctGender(fam, individuals[fam.husband], individuals[fam.wife])
