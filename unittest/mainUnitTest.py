@@ -148,6 +148,15 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
         self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
+    def test_US11(self):
+        print("----------US_11 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint2test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertFalse(parser.eaUserStories.noBigamy(mygedcom.family["@F1@"], mygedcom.family["@F2@"]))
+    
     def test_US12(self):
         print("----------US_12 Testing----------")
         mygedcom = parser.GedcomFile()
@@ -166,7 +175,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint2test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.hzUserStories.noMoreThanQuintuplets(mygedcom.family["@F1@"], mygedcom.individual))
         self.assertFalse(parser.hzUserStories.noMoreThanQuintuplets(mygedcom.family["@F2@"], mygedcom.individual))
@@ -177,7 +186,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/hzSprint2test.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.hzUserStories.fewerThanFifteenSiblings(mygedcom.family["@F1@"]))
         self.assertFalse(parser.hzUserStories.fewerThanFifteenSiblings(mygedcom.family["@F2@"]))
@@ -188,7 +197,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family, mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family, mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
@@ -199,7 +208,7 @@ class TestGedcom(unittest.TestCase):
         mygedcom = parser.GedcomFile()
         valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
         parser.gedcom_categorizer(valid, mygedcom)
-        #mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))

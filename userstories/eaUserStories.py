@@ -38,9 +38,18 @@ def parentsNotTooOld(individual, dad, mom):
     if(momBirth > individual.birthday and dadBirth > individual.birthday):
         return True
 
-def noBigamy(individual):
-    print(f"({individual.husband})")
-    return False
+def noBigamy(family1, family2):
+    if(family1.marriage < family2.marriage):
+        if(family1.divorce == "N/A"):
+            return False
+        else:
+            return True
+    elif(family2.marriage < family1.marriage):
+        if(family2.divorce == "N/A"):
+            return False
+        else:
+            return True
+
 
     
 
