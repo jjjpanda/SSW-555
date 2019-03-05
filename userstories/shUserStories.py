@@ -60,11 +60,14 @@ def birthBeforeMarriage(individual, family):
     else:
         return True
 
-def birthBeforeDeath(individual, family):
+def birthBeforeDeath(individual, mom, dad):
     """ US09: Child should be born before death of mother 
     and before 9 months after death of father """
-    if individual.birthday < family.marriage and individual.famc != "N/A":
-        print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born before his/her parents got married")
+    if mom.deathday != "N/A" and individual.birthday > mom.deathday:
+        print("ERROR: INDIVIDUAL: US09", individual.name, "with ID", individual.id, "is born after his/her mom died")
+        return False
+    if dad.deathday != "N/A" and individual.birthday > (dad.deathday + timedelta(days=9*30)):
+        print("ERROR: INDIVIDUAL: US09", individual.name, "with ID", individual.id, "is born over 9 months after his/her dad died")
         return False
     else:
         return True
@@ -78,8 +81,11 @@ def main(individuals, families):
     for indi in individuals.values():
         ageGreaterThan(indi)
         IDatesInFuture(indi)
+    
     for fam in families.values():
         FDatesInFuture(fam)
-    for individuals in individuals.values():
-        if individuals.famc != "N/A":
-            birthBeforeMarriage(individuals, families[individuals.famc])
+    
+    for individual in individuals.values():
+        if individual.famc != "N/A":
+            birthBeforeMarriage(individual, families[individual.famc])
+            birthBeforeDeath(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
