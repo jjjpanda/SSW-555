@@ -1,0 +1,7 @@
+language: python
+python: 
+  - "3.6"
+script: python mainGedcomParser.py gedcoms/superMessedUpFamily.ged & python unittest/mainUnitTest.py 
+branches: 
+  only:
+    - master
