@@ -4,6 +4,17 @@ sys.dont_write_bytecode = True
 import unittest
 from datetime import datetime, timedelta
 
+def dates_within(dt1, dt2, limit, units):
+    """ returns True if dt1 and dt are within limit units, where 
+        dt1, dt2 are instances of datetime
+        limit is a number
+        units is a string in ('days', 'months', 'years')
+    """
+    units = units.lower()
+    conversion = {'days':1, 'months':30.4, 'years':365.25}
+    return ((abs((dt1 - dt2).days) / conversion[units]) < limit) if units in ('days', 'months', 'years') else None
+    
+
 def IDatesInFuture(individuals):
     """ US01: No Date in individuals can happen after current date.
         Tests that any given individual has only valid dates.
@@ -36,16 +47,12 @@ def ageGreaterThan(individual):
     """ US07: No individual can live more than 150 years.
             False: Individual lives more than 150 years.
     """
-    if (individual.deathday == "N/A"):
-        currentDate = datetime.now()
-        age = currentDate.year - individual.birthday.year - ((currentDate.month, currentDate.day) < (individual.birthday.month, individual.birthday.day))
+    dt2 = individual.deathday if individual.deathday != 'N/A' else datetime.today()
+    if dates_within(individual.birthday, dt2, 150, 'years'):
+            return True
     else:
-        age = individual.deathday.year - individual.birthday.year - ((individual.deathday.month, individual.deathday.day) < (individual.birthday.month, individual.birthday.day))
-    if age < 150:
-        return True
-    else:
-        print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
-        return False
+            print("ERROR: INDIVIDUAL: US07", individual.name, "with ID", individual.id, "lives more than 150 years. Birth date is", individual.birthday.date()) 
+            return False
 
 def birthBeforeMarriage(individual, family):
     """ US08: Children should be born after marriage of parents 
