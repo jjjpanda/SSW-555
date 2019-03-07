@@ -134,7 +134,6 @@ class TestGedcom(unittest.TestCase):
         self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].wife]))
         self.assertTrue(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife]))
 
-
     def test_US10(self):
         print("----------US_10 Testing----------")
         mygedcom = parser.GedcomFile()
@@ -142,11 +141,11 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
-        self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertTrue(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
-        self.assertFalse(parser.hzUserStories.marriageAfterAge(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
+        self.assertFalse(parser.hzUserStories.marriageAfterFourteen(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
+        self.assertTrue(parser.hzUserStories.marriageAfterFourteen(mygedcom.family["@F2@"], mygedcom.individual[mygedcom.family["@F2@"].husband], mygedcom.individual[mygedcom.family["@F2@"].wife]))
+        self.assertFalse(parser.hzUserStories.marriageAfterFourteen(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
+        self.assertTrue(parser.hzUserStories.marriageAfterFourteen(mygedcom.family["@F4@"], mygedcom.individual[mygedcom.family["@F4@"].husband], mygedcom.individual[mygedcom.family["@F4@"].wife]))
+        self.assertFalse(parser.hzUserStories.marriageAfterFourteen(mygedcom.family["@F5@"], mygedcom.individual[mygedcom.family["@F5@"].husband], mygedcom.individual[mygedcom.family["@F5@"].wife]))
 
     def test_US11(self):
         print("----------US_11 Testing----------")
