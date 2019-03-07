@@ -13,18 +13,19 @@ def divorceBeforeDeath(family, husband, wife):
         return False
     return True
 
-
 def yearDifference(date1, date2):
     """returns absolute value of difference between dates in years"""
     return abs(date2.year - date1.year - ((date2.month, date2.day) < (date1.month, date1.day)))
 
-def marriageAfterAge(family, husband, wife):
+def marriageAfterFourteen(family, husband, wife):
     """US10: Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)"""
-    if yearDifference(husband.birthday, family.marriage) < 14: #if husband is < 14, then invalid
-        print(f"ERROR: FAMILY: US10: Husband ({husband.id}: {husband.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, husband.birthday)}) when he got married")
+    husbandAgeAtMarriage = yearDifference(family.marriage, husband.birthday)
+    wifeAgeAtMarriage = yearDifference(family.marriage, wife.birthday)
+    if husbandAgeAtMarriage < 14: #if husband is < 14, then invalid
+        print(f"ERROR: FAMILY: US10: Husband ({husband.id}: {husband.name}) in family ({family.id}) was younger than 14 years old ({husbandAgeAtMarriage}) when he got married")
         return False
-    if yearDifference(family.marriage, wife.birthday) < 14: #if wife is < 14, then invalid
-        print(f"ERROR: FAMILY: US10: Wife ({wife.id}: {wife.name}) in family ({family.id}) was younger than 14 years old ({yearDifference(family.marriage, wife.birthday)}) when she got married")
+    if wifeAgeAtMarriage < 14: #if wife is < 14, then invalid
+        print(f"ERROR: FAMILY: US10: Wife ({wife.id}: {wife.name}) in family ({family.id}) was younger than 14 years old ({wifeAgeAtMarriage}) when she got married")
         return False
     return True
 
@@ -47,10 +48,9 @@ def fewerThanFifteenSiblings(family):
         print(f"ERROR: FAMILY: US15: Family ({family.id}) has > 15 siblings ({len(family.children)})")
         return False
 
-
 def main(individuals, families):
     for fam in families.values():
         divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
-        marriageAfterAge(fam, individuals[fam.husband], individuals[fam.wife])
+        marriageAfterFourteen(fam, individuals[fam.husband], individuals[fam.wife])
         noMoreThanQuintuplets(fam, individuals)
         fewerThanFifteenSiblings(fam)
