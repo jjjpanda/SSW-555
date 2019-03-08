@@ -219,7 +219,7 @@ def main():
             print("can't open file") 
     else:
         try:
-            valid = gedcom_cleaner("gedcoms/testFamily.ged")
+            valid = gedcom_cleaner("gedcoms/superMessedUpFamily.ged")
         except:
             print("can't open file")  
 
