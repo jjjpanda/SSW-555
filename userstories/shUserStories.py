@@ -80,10 +80,6 @@ def birthBeforeDeath(individual, mom, dad):
         return True
 
 
-
-
-
-
 def main(individuals, families):
     
     for fam in families.values():
