@@ -87,6 +87,7 @@ class Individual: #class for individuals
         self.sex = "N/A"
         self.famc = "N/A"
         self.fams = "N/A"
+        self.parents = "N/A"
     #setter methods to change values
     def setName(self, input):
         self.name = input
@@ -100,6 +101,8 @@ class Individual: #class for individuals
         self.famc = input
     def setFams(self, input):
         self.fams = input
+    def setParents(self, input):
+        self.parents = input
     def isAlive(self):
         return True if self.deathday == "N/A" else False
     def getAge(self): # --- ERROR WHEN DATE IS INVALID, AND THEREFORE IS A STRING ---
@@ -182,6 +185,7 @@ def gedcom_categorizer(inputString, gedcom):
                 gedcom.family[current_id].setWife(line[2])
             elif line[1] == "CHIL":
                 gedcom.family[current_id].setChildren(line[2])
+                gedcom.individual[line[2]].setParents(gedcom.family[current_id].id)
             # if any of the following four are present, set the flag so DATE can be assigned to proper tag
             elif line[1] == "BIRT":
                 nextbirth = True

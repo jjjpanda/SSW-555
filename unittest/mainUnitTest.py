@@ -198,9 +198,9 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family, mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family, mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertFalse(parser.jpUserStories.noIncest(mygedcom.family, mygedcom.family["@F7@"], mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
+        self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family["@F1@"].id, mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
+        self.assertTrue(parser.jpUserStories.noIncest(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
+        self.assertFalse(parser.jpUserStories.noIncest(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
     def test_US21(self):
         print("----------US_21 Testing----------")
@@ -209,9 +209,9 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F1@"], mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
-        self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"], mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
-        self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"], mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
+        self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F1@"].id, mygedcom.individual[mygedcom.family["@F1@"].husband], mygedcom.individual[mygedcom.family["@F1@"].wife]))
+        self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
+        self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
