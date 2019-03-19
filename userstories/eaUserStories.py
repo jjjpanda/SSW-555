@@ -9,7 +9,7 @@ def birthBeforeMarriage(individual, family):
     if family.marriage == "N/A":
         return True
 
-    if individual.birthday > family.marriage:
+    if individual.birthday > family.marriage or individual.birthday == family.marriage:
         print(f"ERROR: INDIVIDUAL: US02: Individual ({individual.id}) was married before they were born")
         return False
     else:
@@ -28,14 +28,13 @@ def birthBeforeDeath(individual):
 
 #US12 Mom less than 60 years older, dad less than 80 years older
 def parentsNotTooOld(individual, dad, mom):
-    momBirth = mom.birthday + timedelta(days=365*60)
-    dadBirth = dad.birthday + timedelta(days=365*80)
+    momBirth = mom.birthday + timedelta(days=365.25*60)
+    dadBirth = dad.birthday + timedelta(days=365.25*80)
 
     if(momBirth < individual.birthday or dadBirth < individual.birthday):
         print(f"ERROR: FAMILY: US12: Individual ({individual.id}) parent(s) is/are too old to give birth")
         return False
-
-    if(momBirth > individual.birthday and dadBirth > individual.birthday):
+    else:
         return True
 
 def noBigamy(family1, family2):
