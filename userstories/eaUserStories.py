@@ -26,6 +26,31 @@ def birthBeforeDeath(individual):
     else:
         return True
 
+#US11 Marriage should not occur during marriage to another spouse
+def noBigamy(family1, family2):
+    if(family1=="N/A" or family2=="N/A"):
+        return True
+
+    if(family1.marriage < family2.marriage):
+        if(family1.divorce == "N/A"):
+            print("ERROR: FAMILY: US11: No divorce ever occurred")
+            return False
+        elif(family1.divorce < family2.marriage):
+            return True
+        else:
+            print("ERROR: FAMILY: US11: Divorce occurred after second marriage")
+            return False
+    
+    if(family2.marriage < family1.marriage):
+        if(family2.divorce == "N/A"):
+            print("ERROR: FAMILY: US11: No divorce ever occurred")
+            return False
+        elif(family2.divorce < family1.marriage):
+            return True
+        else:
+            print("ERROR: FAMILY: US11: Divorce occurred after second marriage")
+            return False
+
 #US12 Mom less than 60 years older, dad less than 80 years older
 def parentsNotTooOld(individual, dad, mom):
     momBirth = mom.birthday + timedelta(days=365.25*60)
@@ -36,22 +61,6 @@ def parentsNotTooOld(individual, dad, mom):
         return False
     else:
         return True
-
-def noBigamy(family1, family2):
-    if(family1.marriage < family2.marriage):
-        if(family1.divorce == "N/A"):
-            return False
-        else:
-            return True
-    elif(family2.marriage < family1.marriage):
-        if(family2.divorce == "N/A"):
-            return False
-        else:
-            return True
-
-
-    
-
 
 def main(individuals, families):
     for person in individuals.values():
