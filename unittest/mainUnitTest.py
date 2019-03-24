@@ -155,6 +155,10 @@ class TestGedcom(unittest.TestCase):
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
         self.assertFalse(parser.eaUserStories.noBigamy(mygedcom.family["@F1@"], mygedcom.family["@F2@"]))
+        self.assertTrue(parser.eaUserStories.noBigamy(mygedcom.family["@F3@"], mygedcom.family["@F4@"]))
+        self.assertTrue(parser.eaUserStories.noBigamy(mygedcom.family["@F1@"], "N/A"))
+        self.assertTrue(parser.eaUserStories.noBigamy("N/A", mygedcom.family["@F4@"]))
+        self.assertFalse(parser.eaUserStories.noBigamy(mygedcom.family["@F3@"], mygedcom.family["@F5@"]))
     
     def test_US12(self):
         print("----------US_12 Testing----------")
