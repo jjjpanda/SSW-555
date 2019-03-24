@@ -22,12 +22,11 @@ def IDatesInFuture(individuals):
                 False: Date is invalid because is in the future
     """
     for date in [individuals.birthday, individuals.deathday]:
-        if date != "N/A":
-            if date < datetime.today():
-                return True
-            else:
-                print("ERROR: INDIVIDUAL: US01: individual with ID", individuals.id, "contains date", date.date(), "which occurs in the future")
-                return False
+        if date != "N/A" and date < datetime.today():
+            return True
+        else:
+            print("ERROR: INDIVIDUAL: US01: individual with ID", individuals.id, "contains date", date.date(), "which occurs in the future")
+            return False
 
 def FDatesInFuture(families):
     """ US01: No Date in a family can happen after current date
@@ -36,12 +35,11 @@ def FDatesInFuture(families):
                 False: Date is invalid because is in the future
     """
     for date in [families.marriage, families.divorce]:
-        if date != "N/A":
-            if date < datetime.today():
-                return True
-            else:
-                print("ERROR: FAMILY: US01: family with ID", families.id, "contains date", date.date(), "which occurs in the future")
-                return False
+        if date != "N/A" and date < datetime.today():
+            return True
+        else:
+            print("ERROR: FAMILY: US01: family with ID", families.id, "contains date", date.date(), "which occurs in the future")
+            return False
 
 def ageGreaterThan(individual):
     """ US07: No individual can live more than 150 years.
@@ -56,14 +54,14 @@ def ageGreaterThan(individual):
 
 def birthBeforeMarriage(individual, family):
     """ US08: Children should be born after marriage of parents 
-    and not more than 9 months after their divorce"""
+    and not more than 9 months after their divorce
+    """
     if individual.birthday < family.marriage and individual.famc != "N/A":
         print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born before his/her parents got married")
         return False
-    if family.divorce != "N/A":
-        if individual.birthday > (family.divorce + timedelta(days=30*9)):
-            print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born over 9 months after his parents divorce")
-            return False
+    if family.divorce != "N/A" and individual.birthday > (family.divorce + timedelta(days=30*9)):
+        print("ERROR: INDIVIDUAL: US08", individual.name, "with ID", individual.id, "is born over 9 months after his parents divorce")
+        return False
     else:
         return True
 
@@ -81,10 +79,12 @@ def birthBeforeDeath(individual, mom, dad):
 
 
 def main(individuals, families):
-    
-    for fam in families.values():
-        FDatesInFuture(fam)
-    
+    # for indi, fam in individuals.values(), families.values():
+    #     IDatesInFuture(indi, fam)
+
+    for family in families.values():
+        FDatesInFuture(family)
+   
     for individual in individuals.values():
         ageGreaterThan(individual)
         IDatesInFuture(individual)
