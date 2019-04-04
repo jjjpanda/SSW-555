@@ -5,7 +5,8 @@ import unittest
 from datetime import datetime, timedelta
 
 def dates_within(dt1, dt2, limit, units):
-    """ returns True if dt1 and dt are within limit units, where 
+    """ Helper function to several others.
+        returns True if dt1 and dt2 are within limit units, where 
         dt1, dt2 are instances of datetime
         limit is a number
         units is a string in ('days', 'months', 'years')
@@ -77,10 +78,35 @@ def birthBeforeDeath(individual, mom, dad):
     else:
         return True
 
+def checkLivingMarried(individual):
+    """ Helper function for US30. Checks if individual meets conditions of being alive and married"""
+    return True if individual.fams != 'N/A' and individual.deathday == 'N/A' else False
+
+def list_LivingMarried(individuals):
+    """ Uses checkLivingMarried to decide which individuals to add to the LivingMarried list """
+    livingMarried = [individual.id for individual in individuals.values() if checkLivingMarried(individual) == True]
+    print("These are the individuals who are Married and still alive:")
+    print(livingMarried)
+    return(livingMarried)
+
+def checkLivingSingle(individual):
+    """ Helper function for US31. Checks if individual meets conditions of being alive, older than 30 and never been married"""
+    return True if individual.fams == 'N/A' and individual.deathday == 'N/A' and not(dates_within(individual.birthday, datetime.today(), 30, 'years')) else False
+
+def list_LivingSingle(individuals):
+    """ Uses checkLivingSingle to decide which individuals to add to the LivingSingle list """
+    livingSingle = [individual.id for individual in individuals.values() if checkLivingSingle(individual) == True]
+    print("These are the individuals who are Single, alive, and over 30 years old:")
+    print(livingSingle)
+    return(livingSingle)
+
 
 def main(individuals, families):
+
     # for indi, fam in individuals.values(), families.values():
     #     IDatesInFuture(indi, fam)
+
+    list_LivingMarried(individuals)
 
     for family in families.values():
         FDatesInFuture(family)
@@ -91,3 +117,5 @@ def main(individuals, families):
         if individual.famc != "N/A":
             birthBeforeMarriage(individual, families[individual.famc])
             birthBeforeDeath(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
+        
+    
