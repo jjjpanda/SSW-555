@@ -217,5 +217,32 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
+    def test_US30(self):
+            print("----------US_30 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I1@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I10@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) #becuase she is not married
+            self.assertIn((mygedcom.individual["@I25@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # because she is dead
+            self.assertNotIn((mygedcom.individual["@I7@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # because he is dead
+
+    def test_US31(self):
+            print("----------US_31 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I20@"].id),(parser.shUserStories.list_LivingSingle(mygedcom.individual))) # in: Male 38 and single
+            self.assertIn((mygedcom.individual["@I10@"].id),(parser.shUserStories.list_LivingSingle(mygedcom.individual))) # in: Female, 38 and single
+            self.assertNotIn((mygedcom.individual["@I25@"].id),(parser.shUserStories.list_LivingSingle(mygedcom.individual))) # not in: beacuse he is married
+            self.assertNotIn((mygedcom.individual["@I29@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # not in: he is single but only 23
+            self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # not in: because she is dead
+
+
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
