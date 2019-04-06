@@ -264,7 +264,7 @@ class TestGedcom(unittest.TestCase):
             mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
             self.assertIn((mygedcom.individual["@I100@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
-            self.assertNotIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
