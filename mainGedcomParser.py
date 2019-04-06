@@ -140,13 +140,16 @@ def stringToDate(strInput):
     try:
         return datetime.strptime(strInput, "%d %b %Y")
     except: # ---FIX THIS EXCEPTION, THROWING OFF ERROR WHEN CALCULATING AGE ---
-        return strInput
+        print("ERROR: US42: Invalid Date: "+str(strInput))
+        sys.exit(1)
+
 
 def datetoString(dateInput):
     try:
         return datetime.strftime(dateInput, "%Y-%m-%d")
     except:
-        return dateInput
+        print("ERROR: US42: Invalid Date: "+str(dateInput))
+        sys.exit(1)
 
 
 
@@ -163,11 +166,18 @@ def gedcom_categorizer(inputString, gedcom):
 
         if line[0] == "0" and line[1] == "INDI": # if we identify a new instance of individual, create instance
             current_id = line[2]
-            gedcom.individual[current_id] = Individual(current_id)
+            if current_id not in gedcom.individual.keys():
+                gedcom.individual[current_id] = Individual(current_id)
+            else:
+                print(f"ERROR: INDIVIDUAL: US22: Non-Unique ID ({current_id})")
         
         if line[0] == "0" and line[1] == "FAM":
             current_id = line[2]
-            gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
+            if current_id not in gedcom.family.keys():
+                gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
+            else:
+                print(f"ERROR: FAMILY: US22: Non-Unique ID ({current_id})")
+                
                 
         if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual or family
             # add args to instance of Individual or family
