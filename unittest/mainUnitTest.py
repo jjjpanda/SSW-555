@@ -217,6 +217,13 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
+    def test_US22(self):
+        print("----------US_22 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+        
+        self.assertTrue(parser.gedcom_categorizer(valid, mygedcom))
+
     def test_US30(self):
             print("----------US_30 Testing----------")
             mygedcom = parser.GedcomFile()
@@ -268,6 +275,15 @@ class TestGedcom(unittest.TestCase):
             self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+
+    def test_US42(self):
+            print("----------US_42 Testing----------")
+            try: 
+                mygedcom = parser.GedcomFile()
+                valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+                parser.gedcom_categorizer(valid, mygedcom)
+            except SystemExit:
+                self.fail();
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
