@@ -2,7 +2,18 @@ import sys
 sys.dont_write_bytecode = True
 
 import unittest
-import datetime
+from datetime import datetime, timedelta
+
+def dates_within(dt1, dt2, limit, units):
+    """ Helper function to several others.
+        returns True if dt1 and dt2 are within limit units, where 
+        dt1, dt2 are instances of datetime
+        limit is a number
+        units is a string in ('days', 'months', 'years')
+    """
+    units = units.lower()
+    conversion = {'days':1, 'months':30.4, 'years':365.25}
+    return ((abs((dt1 - dt2).days) / conversion[units]) < limit) if units in ('days', 'months', 'years') else None
 
 def divorceBeforeDeath(family, husband, wife):
     """US06: Divorce can only occur before death of both spouses"""
@@ -48,7 +59,27 @@ def fewerThanFifteenSiblings(family):
         print(f"ERROR: FAMILY: US15: Family ({family.id}) has > 15 siblings ({len(family.children)})")
         return False
 
+def listRecentBirths(individuals):
+    """US:35 List all people in a GEDCOM file who were born in the last 30 days"""
+    recentBirths = []
+    for individual in individuals:
+        if(isinstance(individual.birthday, datetime) and dates_within(individual.birthday, datetime.today(), 30, 'days')):
+            recentBirths.append(individual.id)
+    print(f"These are the individuals who were born in the last 30 days:\n{recentBirths}") if (len(recentBirths) > 0) else ""
+    return recentBirths
+
+def listRecentDeaths(individuals):
+    """US:36 List all people in a GEDCOM file who died in the last 30 days"""
+    recentDeaths = []
+    for individual in individuals:
+        if(isinstance(individual.deathday, datetime) and dates_within(individual.deathday, datetime.today(), 30, 'days')):
+            recentDeaths.append(individual.id)
+    print(f"These are the individuals who died in the last 30 days:\n{recentDeaths}") if (len(recentDeaths) > 0) else ""
+    return recentDeaths
+
 def main(individuals, families):
+    listRecentBirths(individuals.values())
+    listRecentDeaths(individuals.values())
     for fam in families.values():
         divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
         marriageAfterFourteen(fam, individuals[fam.husband], individuals[fam.wife])
