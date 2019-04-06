@@ -243,6 +243,31 @@ class TestGedcom(unittest.TestCase):
             self.assertNotIn((mygedcom.individual["@I29@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # not in: he is single but only 23
             self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_LivingMarried(mygedcom.individual))) # not in: because she is dead
 
+    def test_US35(self):
+            print("----------US_35 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertNotIn((mygedcom.individual["@I14@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I100@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+
+    def test_US36(self):
+            print("----------US_36 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I100@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
