@@ -148,12 +148,15 @@ def datetoString(dateInput):
     try:
         return datetime.strftime(dateInput, "%Y-%m-%d")
     except:
+        if dateInput == "N/A":
+            return dateInput
         print("ERROR: US42: Invalid Date: "+str(dateInput))
         sys.exit(1)
 
 
 
 def gedcom_categorizer(inputString, gedcom):
+    error = False
     fp = inputString.splitlines()
     current_id = None #initiate current_id variable that will be used when parser sees an instance initiator
     nextbirth = False # set a flag that identifies when the following date is for birth (true) or death (false)
@@ -169,6 +172,7 @@ def gedcom_categorizer(inputString, gedcom):
             if current_id not in gedcom.individual.keys():
                 gedcom.individual[current_id] = Individual(current_id)
             else:
+                error = True
                 print(f"ERROR: INDIVIDUAL: US22: Non-Unique ID ({current_id})")
         
         if line[0] == "0" and line[1] == "FAM":
@@ -176,6 +180,7 @@ def gedcom_categorizer(inputString, gedcom):
             if current_id not in gedcom.family.keys():
                 gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
             else:
+                error = True
                 print(f"ERROR: FAMILY: US22: Non-Unique ID ({current_id})")
                 
                 
@@ -220,7 +225,7 @@ def gedcom_categorizer(inputString, gedcom):
                 elif nextdivorce:
                     gedcom.family[current_id].setDivorce(line[2])
                     nextdivorce = False
-
+    return error
                 
 
 def main():
