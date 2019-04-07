@@ -79,22 +79,22 @@ def birthBeforeDeath(individual, mom, dad):
         return True
 
 def checkLivingMarried(individual):
-    """ Helper function for US30. Checks if individual meets conditions of being alive and married"""
+    """ US30: Helper function for US30. Checks if individual meets conditions of being alive and married"""
     return True if individual.fams != 'N/A' and individual.deathday == 'N/A' else False
 
 def list_LivingMarried(individuals):
-    """ Uses checkLivingMarried to decide which individuals to add to the LivingMarried list """
+    """ US30: Uses checkLivingMarried to decide which individuals to add to the LivingMarried list """
     livingMarried = [individual.id for individual in individuals.values() if checkLivingMarried(individual) == True]
     print("These are the individuals who are Married and still alive:")
     print(livingMarried)
     return(livingMarried)
 
 def checkLivingSingle(individual):
-    """ Helper function for US31. Checks if individual meets conditions of being alive, older than 30 and never been married"""
+    """ US31: Helper function for US31. Checks if individual meets conditions of being alive, older than 30 and never been married"""
     return True if individual.fams == 'N/A' and individual.deathday == 'N/A' and not(dates_within(individual.birthday, datetime.today(), 30, 'years')) else False
 
 def list_LivingSingle(individuals):
-    """ Uses checkLivingSingle to decide which individuals to add to the LivingSingle list """
+    """ US31: Uses checkLivingSingle to decide which individuals to add to the LivingSingle list """
     livingSingle = [individual.id for individual in individuals.values() if checkLivingSingle(individual) == True]
     print("These are the individuals who are Single, alive, and over 30 years old:")
     print(livingSingle)
