@@ -123,7 +123,6 @@ def listUpcomingAnniversaries(family):
         else:
             print("ERROR: Family's anniversary is not in the next 30 days")
             return False
-    #F1 F5
 
 def main(individuals, families):
     for person in individuals.values():
