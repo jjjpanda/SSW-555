@@ -15,16 +15,16 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I2@"]))
-        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I1@"]))
-        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I3@"]))
-        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I4@"]))
-        self.assertTrue(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I5@"]))
-        self.assertFalse(parser.shUserStories.IDatesInFuture(mygedcom.individual["@I6@"]))
+        self.assertFalse(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I2@"]))
+        self.assertTrue(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I1@"]))
+        self.assertTrue(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I3@"]))
+        self.assertTrue(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I4@"]))
+        self.assertTrue(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I5@"]))
+        self.assertFalse(parser.shUserStories.i_dates_in_future(mygedcom.individual["@I6@"]))
 
-        self.assertTrue(parser.shUserStories.FDatesInFuture(mygedcom.family["@F2@"]))
-        self.assertTrue(parser.shUserStories.FDatesInFuture(mygedcom.family["@F1@"]))
-        self.assertFalse(parser.shUserStories.FDatesInFuture(mygedcom.family["@F3@"]))
+        self.assertTrue(parser.shUserStories.f_dates_in_future(mygedcom.family["@F2@"]))
+        self.assertTrue(parser.shUserStories.f_dates_in_future(mygedcom.family["@F1@"]))
+        self.assertFalse(parser.shUserStories.f_dates_in_future(mygedcom.family["@F3@"]))
         self.assertIsInstance(mygedcom.family["@F1@"], parser.Family)
         self.assertNotIsInstance(mygedcom.family["@F1@"], parser.Individual)
    
@@ -128,11 +128,11 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I1@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].wife]))
-        self.assertTrue(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I5@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].wife]))
-        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I6@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].wife]))
-        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].wife]))
-        self.assertTrue(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife]))
+        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I1@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].husband]))
+        self.assertTrue(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I5@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].husband]))
+        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I6@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].husband]))
+        self.assertFalse(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].husband]))
+        self.assertTrue(parser.shUserStories.birthBeforeDeath(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband]))
 
     def test_US10(self):
         print("----------US_10 Testing----------")
@@ -217,6 +217,7 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
+<<<<<<< HEAD
     def test_US38(self):
         print("----------US_38 Testing----------")
         mygedcom = parser.GedcomFile()
@@ -243,6 +244,104 @@ class TestGedcom(unittest.TestCase):
         self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F3@"]))
         self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F4@"]))
         self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F5@"]))
+=======
+    def test_US22(self):
+        print("----------US_22 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+        
+        self.assertTrue(parser.gedcom_categorizer(valid, mygedcom))
+
+    def test_US29(self):
+            print("----------US_29 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I100@"].id),(parser.shUserStories.list_deceased(mygedcom.individual)))
+            self.assertIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_deceased(mygedcom.individual)))
+            self.assertIn((mygedcom.individual["@I7@"].id),(parser.shUserStories.list_deceased(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I20@"].id),(parser.shUserStories.list_deceased(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I29@"].id),(parser.shUserStories.list_deceased(mygedcom.individual)))
+
+    def test_US30(self):
+            print("----------US_30 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I1@"].id),(parser.shUserStories.list_living_married(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I10@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) #becuase she is not married
+            self.assertIn((mygedcom.individual["@I25@"].id),(parser.shUserStories.list_living_married(mygedcom.individual)))
+            self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # because she is dead
+            self.assertNotIn((mygedcom.individual["@I7@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # because he is dead
+
+    def test_US31(self):
+            print("----------US_31 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I20@"].id),(parser.shUserStories.list_living_single(mygedcom.individual))) # in: Male 38 and single
+            self.assertIn((mygedcom.individual["@I10@"].id),(parser.shUserStories.list_living_single(mygedcom.individual))) # in: Female, 38 and single
+            self.assertNotIn((mygedcom.individual["@I25@"].id),(parser.shUserStories.list_living_single(mygedcom.individual))) # not in: beacuse he is married
+            self.assertNotIn((mygedcom.individual["@I29@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # not in: he is single but only 23
+            self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # not in: because she is dead
+
+
+    # def test_US33(self):
+    #         print("----------US_33 Testing----------")
+    #         mygedcom = parser.GedcomFile()
+    #         valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+    #         parser.gedcom_categorizer(valid, mygedcom)
+    #         mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+    #         self.assertFalse(parser.shUserStories.list_orphan(mygedcom.individual["@I1@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I1@"].famc].wife]))
+    #         self.assertTrue(parser.shUserStories.list_orphan(mygedcom.individual["@I5@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I5@"].famc].wife]))
+    #         self.assertFalse(parser.shUserStories.list_orphan(mygedcom.individual["@I6@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I6@"].famc].wife]))
+    #         self.assertFalse(parser.shUserStories.list_orphan(mygedcom.individual["@I7@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I7@"].famc].wife]))
+    #         self.assertTrue(parser.shUserStories.list_orphan(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife]))
+    
+    def test_US35(self):
+            print("----------US_35 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertNotIn((mygedcom.individual["@I14@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I100@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentBirths(mygedcom.individual.values())))
+
+    def test_US36(self):
+            print("----------US_36 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.individual["@I100@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I102@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertIn((mygedcom.individual["@I101@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+            self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
+
+    def test_US42(self):
+            print("----------US_42 Testing----------")
+            try: 
+                mygedcom = parser.GedcomFile()
+                valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+                parser.gedcom_categorizer(valid, mygedcom)
+            except SystemExit:
+                self.fail();
+
+    
+>>>>>>> bb90112f5f5ed8e3ba6b377dfc9b6562450b6129
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
