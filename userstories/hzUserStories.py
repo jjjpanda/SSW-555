@@ -60,21 +60,21 @@ def fewerThanFifteenSiblings(family):
         return False
 
 def listRecentBirths(individuals):
-    """US:35 List all people in a GEDCOM file who were born in the last 30 days"""
+    """US35: List all people in a GEDCOM file who were born in the last 30 days"""
     recentBirths = []
     for individual in individuals:
         if(isinstance(individual.birthday, datetime) and dates_within(individual.birthday, datetime.today(), 30, 'days')):
             recentBirths.append(individual.id)
-    print(f"These are the individuals who were born in the last 30 days:\n{recentBirths}") if (len(recentBirths) > 0) else ""
+    print(f"US35: These are the individuals who were born in the last 30 days:\n{recentBirths}") if (len(recentBirths) > 0) else ""
     return recentBirths
 
 def listRecentDeaths(individuals):
-    """US:36 List all people in a GEDCOM file who died in the last 30 days"""
+    """US36: List all people in a GEDCOM file who died in the last 30 days"""
     recentDeaths = []
     for individual in individuals:
         if(isinstance(individual.deathday, datetime) and dates_within(individual.deathday, datetime.today(), 30, 'days')):
             recentDeaths.append(individual.id)
-    print(f"These are the individuals who died in the last 30 days:\n{recentDeaths}") if (len(recentDeaths) > 0) else ""
+    print(f"US36: These are the individuals who died in the last 30 days:\n{recentDeaths}") if (len(recentDeaths) > 0) else ""
     return recentDeaths
 
 def main(individuals, families):
