@@ -217,34 +217,6 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.jpUserStories.correctGender(mygedcom.family["@F3@"].id, mygedcom.individual[mygedcom.family["@F3@"].husband], mygedcom.individual[mygedcom.family["@F3@"].wife]))
         self.assertFalse(parser.jpUserStories.correctGender(mygedcom.family["@F7@"].id, mygedcom.individual[mygedcom.family["@F7@"].husband], mygedcom.individual[mygedcom.family["@F7@"].wife]))
 
-<<<<<<< HEAD
-    def test_US38(self):
-        print("----------US_38 Testing----------")
-        mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/eaSprint3test.ged")
-        parser.gedcom_categorizer(valid, mygedcom)
-        mygedcom.genTables(mygedcom.individual, mygedcom.family)
-
-    #Tests subject to change
-        self.assertTrue(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I1@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I2@"]))
-        self.assertTrue(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I3@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I4@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I5@"]))
-
-    def test_US39(self):
-        print("----------US_39 Testing----------")
-        mygedcom = parser.GedcomFile()
-        valid = parser.gedcom_cleaner("./gedcoms/eaSprint3test.ged")
-        parser.gedcom_categorizer(valid, mygedcom)
-        mygedcom.genTables(mygedcom.individual, mygedcom.family)
-
-        self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F1@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F2@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F3@"]))
-        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F4@"]))
-        self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F5@"]))
-=======
     def test_US22(self):
         print("----------US_22 Testing----------")
         mygedcom = parser.GedcomFile()
@@ -331,6 +303,34 @@ class TestGedcom(unittest.TestCase):
             self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
 
+    def test_US38(self):
+        print("----------US_38 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint3test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+    #Tests subject to change
+        self.assertTrue(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I1@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I2@"]))
+        self.assertTrue(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I3@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I4@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingBirthdays(mygedcom.individual["@I5@"]))
+
+    def test_US39(self):
+        print("----------US_39 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint3test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+    #Tests subject to change
+        self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F1@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F2@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F3@"]))
+        self.assertFalse(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F4@"]))
+        self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F5@"]))
+
     def test_US42(self):
             print("----------US_42 Testing----------")
             try: 
@@ -341,7 +341,6 @@ class TestGedcom(unittest.TestCase):
                 self.fail();
 
     
->>>>>>> bb90112f5f5ed8e3ba6b377dfc9b6562450b6129
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
