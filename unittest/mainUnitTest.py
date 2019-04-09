@@ -332,13 +332,11 @@ class TestGedcom(unittest.TestCase):
         self.assertTrue(parser.eaUserStories.listUpcomingAnniversaries(mygedcom.family["@F5@"]))
 
     def test_US42(self):
-            print("----------US_42 Testing----------")
-            try: 
-                mygedcom = parser.GedcomFile()
-                valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
-                parser.gedcom_categorizer(valid, mygedcom)
-            except SystemExit:
-                self.fail();
+        print("----------US_42 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        self.assertTrue(parser.dateError)
 
     
 
