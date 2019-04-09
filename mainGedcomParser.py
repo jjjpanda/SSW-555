@@ -154,6 +154,7 @@ def datetoString(dateInput):
         sys.exit(1)
 
 
+duplicateIDs= []
 
 def gedcom_categorizer(inputString, gedcom):
     error = False
@@ -173,16 +174,15 @@ def gedcom_categorizer(inputString, gedcom):
                 gedcom.individual[current_id] = Individual(current_id)
             else:
                 error = True
-                print(f"ERROR: INDIVIDUAL: US22: Non-Unique ID ({current_id})")
-        
+                duplicateIDs.append(current_id)
+                
         if line[0] == "0" and line[1] == "FAM":
             current_id = line[2]
             if current_id not in gedcom.family.keys():
                 gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
             else:
                 error = True
-                print(f"ERROR: FAMILY: US22: Non-Unique ID ({current_id})")
-                
+                duplicateIDs.append(current_id)                
                 
         if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual or family
             # add args to instance of Individual or family
@@ -249,6 +249,9 @@ def main():
     shUserStories.main(mygedcom.individual, mygedcom.family)
     jpUserStories.main(mygedcom.individual, mygedcom.family)
     eaUserStories.main(mygedcom.individual, mygedcom.family)
+   
+    for duplicate in duplicateIDs:
+        print(f"ERROR: US22: Non-Unique ID ({duplicate})")
 
 if __name__ == '__main__':
     main()
