@@ -107,14 +107,10 @@ def list_deceased(individuals):
     print(deceased)
     return(deceased)
 
-# def chk_orphan(individual, mom, dad):
-#     """ US33: Helper function for US33. Checks if individual meets conditions of being an orphan, i.e. both parents dead and individual younger than 18 """
-#     return True if mom.deathday != "N/A" and dad.deathday != "N/A" and dates_within(individual.birthday, datetime.today, 18, "years") else False
-
 def list_orphan(individual, mom, dad): 
     """ US33: Uses chk_orphan to decide which individuals to add to the orphans list """
     orphans = []
-    if mom.deathday != "N/A" and dad.deathday != "N/A" and dates_within(individual.birthday, datetime.today, 18, "years"):
+    if mom.deathday != "N/A" and dad.deathday != "N/A" and dates_within(individual.birthday, datetime.today(), 18, "years"):
         orphans.append(individual.id)
     print("These are the individuals who are younger than 18, and who's parents are both dead:")
     print(orphans)
