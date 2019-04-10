@@ -111,12 +111,14 @@ def list_deceased(individuals):
 #     """ US33: Helper function for US33. Checks if individual meets conditions of being an orphan, i.e. both parents dead and individual younger than 18 """
 #     return True if mom.deathday != "N/A" and dad.deathday != "N/A" and dates_within(individual.birthday, datetime.today, 18, "years") else False
 
-# def list_orphan(individuals, mom, dad): 
-#     """ US33: Uses chk_orphan to decide which individuals to add to the orphans list """
-#     orphans = [individual.id for individual in individuals.values() if chk_orphan(individual, mom, dad) == True]
-#     print("These are the individuals who are younger than 18, and who's parents are both dead:")
-#     print(orphans)
-#     return(orphans)
+def list_orphan(individual, mom, dad): 
+    """ US33: Uses chk_orphan to decide which individuals to add to the orphans list """
+    orphans = []
+    if mom.deathday != "N/A" and dad.deathday != "N/A" and dates_within(individual.birthday, datetime.today, 18, "years"):
+        orphans.append(individual.id)
+    print("These are the individuals who are younger than 18, and who's parents are both dead:")
+    print(orphans)
+    return(orphans)
 
 def main(individuals, families):
 
@@ -135,5 +137,5 @@ def main(individuals, families):
         if individual.famc != "N/A":
             birthBeforeMarriage(individual, families[individual.famc])
             birthBeforeDeath(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
-            # list_orphan(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
+            list_orphan(individual, individuals[families[individual.famc].wife], individuals[families[individual.famc].husband])
     
