@@ -85,7 +85,7 @@ def chk_living_married(individual):
 def list_living_married(individuals):
     """ US30: Uses chk_living_married to decide which individuals to add to the LivingMarried list """
     livingMarried = [individual.id for individual in individuals.values() if chk_living_married(individual) == True]
-    print("These are the individuals who are Married and still alive:")
+    print("US30: These are the individuals who are Married and still alive:")
     print(livingMarried)
     return(livingMarried)
 
@@ -96,14 +96,14 @@ def chk_living_single(individual):
 def list_living_single(individuals): 
     """ US31: Uses chk_living_single to decide which individuals to add to the LivingSingle list """
     livingSingle = [individual.id for individual in individuals.values() if chk_living_single(individual) == True]
-    print("These are the individuals who are Single, alive, and over 30 years old:")
+    print("US31: These are the individuals who are Single, alive, and over 30 years old:")
     print(livingSingle)
     return(livingSingle)
 
 def list_deceased(individuals): 
     """ US29: checks individuals in a GEDCOM to see if they meet the condition of being deceased, and lists them """
     deceased = [individual.id for individual in individuals.values() if individual.deathday != 'N/A']
-    print("These are the individuals who are deceased:")
+    print("US29: These are the individuals who are deceased:")
     print(deceased)
     return(deceased)
 

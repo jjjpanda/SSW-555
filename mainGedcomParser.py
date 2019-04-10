@@ -136,12 +136,15 @@ class Family: #constructor only set id at creation
     def __repr__(self): #to string method
         return self.id+" "+self.marriage+" "+self.divorce+" "+self.husband+" "+self.wife+" "+str(self.children)
 
+dateError = False
+
 def stringToDate(strInput):
     try:
         return datetime.strptime(strInput, "%d %b %Y")
     except: # ---FIX THIS EXCEPTION, THROWING OFF ERROR WHEN CALCULATING AGE ---
-        print("ERROR: US42: Invalid Date: "+str(strInput))
-        sys.exit(1)
+        global dateError
+        dateError = True
+        return strInput
 
 
 def datetoString(dateInput):
@@ -150,10 +153,12 @@ def datetoString(dateInput):
     except:
         if dateInput == "N/A":
             return dateInput
-        print("ERROR: US42: Invalid Date: "+str(dateInput))
-        sys.exit(1)
+        global dateError
+        dateError = True
+        return dateInput
 
 
+duplicateIDs= []
 
 def gedcom_categorizer(inputString, gedcom):
     error = False
@@ -173,16 +178,15 @@ def gedcom_categorizer(inputString, gedcom):
                 gedcom.individual[current_id] = Individual(current_id)
             else:
                 error = True
-                print(f"ERROR: INDIVIDUAL: US22: Non-Unique ID ({current_id})")
-        
+                duplicateIDs.append(current_id)
+                
         if line[0] == "0" and line[1] == "FAM":
             current_id = line[2]
             if current_id not in gedcom.family.keys():
                 gedcom.family[current_id] = Family(current_id) # if we identify a new instance of family, create instance
             else:
                 error = True
-                print(f"ERROR: FAMILY: US22: Non-Unique ID ({current_id})")
-                
+                duplicateIDs.append(current_id)                
                 
         if line[0] != "0": # if this is level 1 or 2, we are defining an already created instance of individual or family
             # add args to instance of Individual or family
@@ -249,6 +253,12 @@ def main():
     shUserStories.main(mygedcom.individual, mygedcom.family)
     jpUserStories.main(mygedcom.individual, mygedcom.family)
     eaUserStories.main(mygedcom.individual, mygedcom.family)
+   
+    for duplicate in duplicateIDs:
+        print(f"ERROR: US22: Non-Unique ID ({duplicate})")
+
+    if dateError:
+        print("ERROR: US42: Invalid Date in GEDCOM")
 
 if __name__ == '__main__':
     main()

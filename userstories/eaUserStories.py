@@ -33,23 +33,23 @@ def noBigamy(family1, family2):
 
     if(family1.marriage < family2.marriage):
         if(family1.divorce == "N/A"):
-            print("ERROR: FAMILY: US11: No divorce ever occurred")
+            #print("ERROR: FAMILY: US11: No divorce ever occurred")
             return False
         elif(family1.divorce < family2.marriage):
             return True
         else:
-            print("ERROR: FAMILY: US11: Divorce occurred after second marriage")
+            print(f"ERROR: FAMILY: US11: Marriage should not occur during marriage to another spouse ({family1.id}, {family2.id})")
             return False
     
-    if(family2.marriage < family1.marriage):
+    '''if(family2.marriage < family1.marriage):
         if(family2.divorce == "N/A"):
-            print("ERROR: FAMILY: US11: No divorce ever occurred")
+            #print("ERROR: FAMILY: US11: No divorce ever occurred")
             return False
         elif(family2.divorce < family1.marriage):
             return True
         else:
-            print("ERROR: FAMILY: US11: Divorce occurred after second marriage")
-            return False
+            print(f"ERROR: FAMILY: US11: Marriage should not occur during marriage to another spouse ({family1.id}, {family2.id})")
+            return False'''
 
 #US12 Mom less than 60 years older, dad less than 80 years older
 def parentsNotTooOld(individual, dad, mom):
@@ -62,8 +62,84 @@ def parentsNotTooOld(individual, dad, mom):
     else:
         return True
 
+#US38 List all living people in a GEDCOM file whose birthdays occur in the next 30 days
+def listUpcomingBirthdays(individual):
+    thirtyDays = datetime.today() + timedelta(days=30)
+    today = datetime.today()
+    if (thirtyDays.month == today.month):
+        if (thirtyDays.month == individual.birthday.month):
+            if (today.day <= individual.birthday.day and thirtyDays.day >= individual.birthday.day):
+                return True
+            else:
+                #print("ERROR: Indivdiual's birthday is not in the next 30 days")
+                return False
+        else:
+            #print("ERROR: Indivdiual's birthday is not in the next 30 days")
+            return False
+    else:
+        if (today.month == individual.birthday.month):
+            if (individual.birthday.day >= today.month):
+                return True
+            else:
+                #print("ERROR: Indivdiual's birthday is not in the next 30 days")
+                return False
+        elif (thirtyDays.month == individual.birthday.month):
+            if (individual.birthday.day <= thirtyDays.day):
+                return True
+            else:
+                #print("ERROR: Indivdiual's birthday is not in the next 30 days")
+                return False
+        else:
+            #print("ERROR: Indivdiual's birthday is not in the next 30 days")
+            return False
+
+#US39 List all living couples in a GEDCOM file whose marriage anniversaries occur in the next 30 days
+def listUpcomingAnniversaries(family):
+    thirtyDays = datetime.today() + timedelta(days=30)
+    today = datetime.today()
+    if (thirtyDays.month == today.month):
+        if (thirtyDays.month == family.marriage.month):
+            if (today.day <= family.marriage.day and thirtyDays.day >= family.marriage.day):
+                return True
+            else:
+                #print("ERROR: Family's anniversary is not in the next 30 days")
+                return False
+        else:
+            #print("ERROR: Family's anniversary is not in the next 30 days")
+            return False
+    else:
+        if (today.month == family.marriage.month):
+            if (family.marriage.day >= today.month):
+                return True
+            else:
+                #print("ERROR: Family's anniversary is not in the next 30 days")
+                return False
+        elif (thirtyDays.month == family.marriage.month):
+            if (family.marriage.day <= thirtyDays.day):
+                return True
+            else:
+                #print("ERROR: Family's anniversary is not in the next 30 days")
+                return False
+        else:
+            #print("ERROR: Family's anniversary is not in the next 30 days")
+            return False
+
 def main(individuals, families):
+    birthdays = []
+    anniversaries = []
     for person in individuals.values():
         if (person.fams != "N/A"):
             birthBeforeMarriage(person, families[person.fams])
         birthBeforeDeath(person)
+        if (person.famc != "N/A"):
+            parentsNotTooOld(person, individuals[families[person.famc].husband], individuals[families[person.famc].wife])
+        if listUpcomingBirthdays(person):
+            birthdays.append(person.id)
+    for family1 in families.values():
+        for family2 in families.values():
+            if family1.id != family2.id and (family1.husband == family2.husband or family1.wife == family2.wife):
+                noBigamy(family1, family2)
+        if listUpcomingAnniversaries(family1):
+            anniversaries.append(family1.id)
+    print(f"US38: These are the individuals whose birthdays are in the next 30 days:\n{birthdays}") if (len(birthdays) > 0) else ""
+    print(f"US39: These are the families whose anniversaries are in the next 30 days:\n{anniversaries}") if (len(anniversaries) > 0) else ""
