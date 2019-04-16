@@ -76,10 +76,19 @@ def listRecentDeaths(individuals):
             recentDeaths.append(individual.id)
     print(f"US36: These are the individuals who died in the last 30 days:\n{recentDeaths}") if (len(recentDeaths) > 0) else ""
     return recentDeaths
-
+def listLargeAgeDifference(individuals, families):
+    """US34: List all couples who were married when the older spouse was more than twice as old as the younger spouse"""
+    largeAgeDifferences = []
+    for family in families:
+        diff = abs(individuals[family.husband].getAge() - individuals[family.wife].getAge())
+        if (diff > 2*individuals[family.husband].getAge() or diff > 2*individuals[family.wife].getAge()):
+            largeAgeDifferences.append(family.id)
+    print(f"US34: These are the families whose spouses have a large age difference:\n{largeAgeDifferences}") if (len(largeAgeDifferences) > 0) else ""
+    return largeAgeDifferences
 def main(individuals, families):
     listRecentBirths(individuals.values())
     listRecentDeaths(individuals.values())
+    listLargeAgeDifference(individuals, families.values())
     for fam in families.values():
         divorceBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
         marriageAfterFourteen(fam, individuals[fam.husband], individuals[fam.wife])

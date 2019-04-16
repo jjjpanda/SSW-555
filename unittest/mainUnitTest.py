@@ -224,6 +224,19 @@ class TestGedcom(unittest.TestCase):
         
         self.assertTrue(parser.gedcom_categorizer(valid, mygedcom))
 
+    def test_US27(self):
+            print("----------US_27 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertTrue(mygedcom.individual["@I10@"].getAge() is 37)
+            self.assertTrue(mygedcom.individual["@I11@"].getAge() is 14)
+            self.assertTrue(mygedcom.individual["@I29@"].getAge() is 23)
+            self.assertTrue(mygedcom.individual["@I4@"].getAge() is 118)
+            self.assertTrue(mygedcom.individual["@I5@"].getAge() is 63)
+            
     def test_US29(self):
             print("----------US_29 Testing----------")
             mygedcom = parser.GedcomFile()
@@ -274,7 +287,19 @@ class TestGedcom(unittest.TestCase):
             self.assertNotIn((mygedcom.individual["@I9@"].id), (parser.shUserStories.list_orphan(mygedcom.individual["@I9@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I9@"].famc].husband])))
             self.assertIn((mygedcom.individual["@I30@"].id), (parser.shUserStories.list_orphan(mygedcom.individual["@I30@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I30@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I30@"].famc].husband])))
             self.assertNotIn((mygedcom.individual["@I4@"].id), (parser.shUserStories.list_orphan(mygedcom.individual["@I4@"], mygedcom.individual[mygedcom.family[mygedcom.individual["@I4@"].famc].wife], mygedcom.individual[mygedcom.family[mygedcom.individual["@I4@"].famc].husband])))
-            
+
+    def test_US34(self):
+            print("----------US_34 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+            self.assertIn((mygedcom.family["@F1@"].id),(parser.hzUserStories.listLargeAgeDifference(mygedcom.individual, mygedcom.family.values())))
+            self.assertIn((mygedcom.family["@F2@"].id),(parser.hzUserStories.listLargeAgeDifference(mygedcom.individual, mygedcom.family.values())))
+            self.assertNotIn((mygedcom.family["@F3@"].id),(parser.hzUserStories.listLargeAgeDifference(mygedcom.individual, mygedcom.family.values())))
+            self.assertNotIn((mygedcom.family["@F4@"].id),(parser.hzUserStories.listLargeAgeDifference(mygedcom.individual, mygedcom.family.values())))
+            self.assertNotIn((mygedcom.family["@F5@"].id),(parser.hzUserStories.listLargeAgeDifference(mygedcom.individual, mygedcom.family.values())))
 
     def test_US35(self):
             print("----------US_35 Testing----------")
