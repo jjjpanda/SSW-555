@@ -39,6 +39,14 @@ def correctGender(familyID, husband, wife):
         print(f"ERROR: FAMILY: US21: Marriage in family ({familyID}) has incorrect genders.")
         return False
 
+def orderSiblings(listOfChildren, individuals):
+    if len(listOfChildren) == 0 or len(listOfChildren) == 1:
+        return listOfChildren
+    listOfAges = []
+    for person in listOfChildren:
+        listOfAges.append(individuals[person].getAge())
+    return [listOfChildren for _,listOfChildren in sorted(zip(listOfAges,listOfChildren),reverse=True)]
+    
 def main(individuals, families):
     for fam in families.values():
         marriageBeforeDivorce(fam)
