@@ -39,9 +39,41 @@ def correctGender(familyID, husband, wife):
         print(f"ERROR: FAMILY: US21: Marriage in family ({familyID}) has incorrect genders.")
         return False
 
+def orderSiblings(listOfChildren, individuals):
+    if len(listOfChildren) <= 1:
+        return listOfChildren
+    listOfAges = []
+    for person in listOfChildren:
+        listOfAges.append(individuals[person].getAge())
+    return [listOfChildren for _,listOfChildren in sorted(zip(listOfAges,listOfChildren),reverse=True)]
+    
+def correspondingEntriesFromFamilies(fam, individuals):
+    if individuals[fam.husband].fams != individuals[fam.wife].fams:    
+        print(f"ERROR: US26: No corresponding entry for spouse in individuals for ({fam.id})")
+        return False
+    if len(fam.children) > 0:
+        for child in fam.children:
+            if fam.id != individuals[child].parents:
+                print(f"ERROR: US26: No corresponding entry for children in individuals for ({fam.id})")
+                return False
+    return True
+
+
+def correspondingEntriesFromIndividuals(individual, families):
+    if individual.famc != "N/A" and individual.id not in families[individual.famc].children:
+        print(f"ERROR: US26: No corresponding entry for child in families for ({individual.id})")
+        return False
+    if individual.fams != "N/A" and (individual.id not in families[individual.fams].husband or individual.id not in families[individual.fams].wife):
+        print(f"ERROR: US26: No corresponding entry for spouse in families for ({individual.id})")
+        return False
+    return True
+
 def main(individuals, families):
     for fam in families.values():
         marriageBeforeDivorce(fam)
         marriageBeforeDeath(fam, individuals[fam.husband], individuals[fam.wife])
         noIncest(fam.id, individuals[fam.husband], individuals[fam.wife])
         correctGender(fam.id, individuals[fam.husband], individuals[fam.wife])
+        correspondingEntriesFromFamilies(fam, individuals)
+    #for individual in individuals.values:
+        #correspondingEntriesFromIndividuals(individual, families)
