@@ -62,6 +62,68 @@ def parentsNotTooOld(individual, dad, mom):
     else:
         return True
 
+#US32 List all multiple births in a GEDCOM file
+def listMultipleBirths(individuals):
+    individualsId = [individual.id for individual in individuals.values()]
+    individualsBirthday = [individual.birthday for individual in individuals.values()]
+    sameBirthId = []
+    sameBirthDate = []
+    x = 0
+    while (x < len(individualsId)):
+        i = 0
+        n = 0
+        if(individualsId[x] not in sameBirthId):
+            while (i < len(individualsId)):
+                if (individualsBirthday[x] == individualsBirthday[i] and individualsId[x] != individualsId[i]):
+                    if (n == 0):
+                        sameBirthId.append(individualsId[x])
+                        sameBirthDate.append(individualsBirthday[x])
+                        n = 1
+                    sameBirthId.append(individualsId[i])
+                    sameBirthDate.append(individualsBirthday[i])
+                i += 1
+        x += 1
+
+    print("US32: These are the individuals who have multiple births:")
+    print(sameBirthId)
+    print(sameBirthDate)
+    return(sameBirthId)
+
+#US37 List all living spouses and descendants of people in a GEDCOM file who died in the last 30 days
+def listRecentSurvivors(individual):
+    # beforeToday = datetime.today() - timedelta(days=30)
+    # if (individual.deat >= beforeToday):
+    #     individualsId.append(individual.id)
+    #     print(individual.id)
+
+
+    individualsId = [individual.id for individual in individuals.values()]
+    individualsDeathday = [individual.deathday for individual in individuals.values()]
+    
+    recentDeathId = []
+    recentDeathDate = []
+    beforeToday = datetime.today() - timedelta(days=30)
+    x = 0
+    while (x < len(individualsId)):
+        if (individualsDeathday[x] != "N/A"):
+            if (individualsDeathday[x] >= beforeToday):
+                recentDeathId.append(individualsId[x])
+                recentDeathDate.append(individualsDeathday[x])
+        x += 1
+    i = 0
+    print(recentDeathId)
+    print(recentDeathDate)
+    while (i < len(recentDeathId)):
+        print("Recent survivors of", recentDeathId[i], recentDeathDate[i])
+        if (recentDeathId[i].fams != "N/A"):
+            if (recentDeathId[i].fams.deathday != "N/A"):
+                print("Spouse", recentDeathId[i].fams)
+        i += 1
+    print("Died in the last 30 days")
+    print(recentDeathId)
+    print(recentDeathDate)
+    return individualsId
+
 #US38 List all living people in a GEDCOM file whose birthdays occur in the next 30 days
 def listUpcomingBirthdays(individual):
     thirtyDays = datetime.today() + timedelta(days=30)

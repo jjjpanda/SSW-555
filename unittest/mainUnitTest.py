@@ -276,6 +276,19 @@ class TestGedcom(unittest.TestCase):
             self.assertNotIn((mygedcom.individual["@I29@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # not in: he is single but only 23
             self.assertNotIn((mygedcom.individual["@I2@"].id),(parser.shUserStories.list_living_married(mygedcom.individual))) # not in: because she is dead
 
+    def test_US32(self):
+        print("----------US_32 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint4test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertIn((mygedcom.individual["@I1@"].id),(parser.eaUserStories.listMultipleBirths(mygedcom.individual)))
+        self.assertIn((mygedcom.individual["@I2@"].id),(parser.eaUserStories.listMultipleBirths(mygedcom.individual)))
+        self.assertNotIn((mygedcom.individual["@I3@"].id),(parser.eaUserStories.listMultipleBirths(mygedcom.individual)))
+        self.assertIn((mygedcom.individual["@I5@"].id),(parser.eaUserStories.listMultipleBirths(mygedcom.individual)))
+        self.assertNotIn((mygedcom.individual["@I4@"].id),(parser.eaUserStories.listMultipleBirths(mygedcom.individual)))
+
     def test_US33(self):
             print("----------US_33 Testing----------")
             mygedcom = parser.GedcomFile()
@@ -327,6 +340,15 @@ class TestGedcom(unittest.TestCase):
             self.assertNotIn((mygedcom.individual["@I26@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
             self.assertNotIn((mygedcom.individual["@I1@"].id),(parser.hzUserStories.listRecentDeaths(mygedcom.individual.values())))
 
+    def test_US37(self):
+        print("----------US_37 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/eaSprint4test.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+
+        self.assertIn((mygedcom.individual["@I1@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual)))
+
     def test_US38(self):
         print("----------US_38 Testing----------")
         mygedcom = parser.GedcomFile()
@@ -361,8 +383,6 @@ class TestGedcom(unittest.TestCase):
         valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
         parser.gedcom_categorizer(valid, mygedcom)
         self.assertTrue(parser.dateError)
-
-    
 
 if __name__ == '__main__':
     unittest.TextTestRunner().run(unittest.TestLoader().loadTestsFromTestCase(TestGedcom))
