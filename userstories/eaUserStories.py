@@ -90,7 +90,7 @@ def listMultipleBirths(individuals):
     return(sameBirthId)
 
 #US37 List all living spouses and descendants of people in a GEDCOM file who died in the last 30 days
-def listRecentSurvivors(individual):
+def listRecentSurvivors(individuals):
     # beforeToday = datetime.today() - timedelta(days=30)
     # if (individual.deat >= beforeToday):
     #     individualsId.append(individual.id)
