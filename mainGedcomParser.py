@@ -74,8 +74,9 @@ class GedcomFile:
         familyTable = PrettyTable() #table for families
         familyTable.field_names = ["ID", "Married", "Divorced", "Husband ID", "Husband Name", "Wife ID", "Wife Name", "Children"]
         for item, values in sorted(familyDict.items()):
-            familyTable.add_row([values.id, datetoString(values.marriage), datetoString(values.divorce), values.husband, peopleDict[values.husband].name, values.wife, peopleDict[values.wife].name, str(values.children)])
+            familyTable.add_row([values.id, datetoString(values.marriage), datetoString(values.divorce), values.husband, peopleDict[values.husband].name, values.wife, peopleDict[values.wife].name, str(jpUserStories.orderSiblings(values.children,peopleDict))])
         print(familyTable)
+        print("US28: Children have been ordered from oldest to youngest")
 
 
 class Individual: #class for individuals
