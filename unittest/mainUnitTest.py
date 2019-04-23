@@ -347,7 +347,11 @@ class TestGedcom(unittest.TestCase):
         parser.gedcom_categorizer(valid, mygedcom)
         mygedcom.genTables(mygedcom.individual, mygedcom.family)
 
-        self.assertIn((mygedcom.individual["@I1@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual)))
+        self.assertIn((mygedcom.individual["@I1@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual, mygedcom.family)))
+        self.assertIn((mygedcom.individual["@I2@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual, mygedcom.family)))
+        self.assertIn((mygedcom.individual["@I3@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual, mygedcom.family)))
+        self.assertNotIn((mygedcom.individual["@I4@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual, mygedcom.family)))
+        self.assertNotIn((mygedcom.individual["@I5@"].id),(parser.eaUserStories.listRecentSurvivors(mygedcom.individual, mygedcom.family)))
 
     def test_US38(self):
         print("----------US_38 Testing----------")
