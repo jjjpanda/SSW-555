@@ -224,6 +224,16 @@ class TestGedcom(unittest.TestCase):
         
         self.assertTrue(parser.gedcom_categorizer(valid, mygedcom))
 
+    def test_US26(self):
+        print("----------US_26 Testing----------")
+        mygedcom = parser.GedcomFile()
+        valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+        parser.gedcom_categorizer(valid, mygedcom)
+        mygedcom.genTables(mygedcom.individual, mygedcom.family)
+        
+        self.assertTrue(parser.jpUserStories.correspondingEntriesFromFamilies(mygedcom.family["@F1@"], mygedcom.individual))
+        self.assertFalse(parser.jpUserStories.correspondingEntriesFromFamilies(mygedcom.family["@F5@"], mygedcom.individual))
+
     def test_US27(self):
             print("----------US_27 Testing----------")
             mygedcom = parser.GedcomFile()
@@ -236,7 +246,18 @@ class TestGedcom(unittest.TestCase):
             self.assertTrue(mygedcom.individual["@I29@"].getAge() is 23)
             self.assertTrue(mygedcom.individual["@I4@"].getAge() is 118)
             self.assertTrue(mygedcom.individual["@I5@"].getAge() is 63)
-            
+    
+    def test_US28(self):
+            print("----------US_28 Testing----------")
+            mygedcom = parser.GedcomFile()
+            valid = parser.gedcom_cleaner("./gedcoms/superMessedUpFamily.ged")
+            parser.gedcom_categorizer(valid, mygedcom)
+            mygedcom.genTables(mygedcom.individual, mygedcom.family)  
+
+            self.assertTrue(parser.jpUserStories.orderSiblings(mygedcom.family["@F1@"].children,mygedcom.individual) == ['@I3@', '@I4@'])
+            self.assertFalse(parser.jpUserStories.orderSiblings(mygedcom.family["@F2@"].children,mygedcom.individual) == ['@I23@', '@I22@', '@I21@', '@I20@', '@I18@', '@I19@',  '@I17@', '@I16@', '@I15@', '@I14@', '@I26@', '@I25@', '@I24@', '@I28@', '@I27@', '@I7@'])
+
+
     def test_US29(self):
             print("----------US_29 Testing----------")
             mygedcom = parser.GedcomFile()
